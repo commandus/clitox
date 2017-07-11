@@ -25,7 +25,7 @@ esac],
 AM_CONDITIONAL(DEBUG, test x"$debug" = x"true")
 
 # Checks for libraries.
-AC_CHECK_LIB(tox, tox_new, [], AC_MSG_ERROR([Could not find libtox. Try $ ./configure LDFLAGS='-Lyour-tox-lib-path']))
+AC_CHECK_LIB(toxcore, tox_new, [], AC_MSG_ERROR([Could not find libtoxcore. Try $ ./configure LDFLAGS='-Lyour-toxcore-lib-path']))
 AC_CHECK_LIB(sodium, sodium_init, [], AC_MSG_ERROR([Could not find libsodium. Try $ ./configure LDFLAGS='-Lyour-sodium-lib-path']))
 
 # Checks for header files.

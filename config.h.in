@@ -18,8 +18,8 @@
 /* Define to 1 if you have the `sodium' library (-lsodium). */
 #undef HAVE_LIBSODIUM
 
-/* Define to 1 if you have the `tox' library (-ltox). */
-#undef HAVE_LIBTOX
+/* Define to 1 if you have the `toxcore' library (-ltoxcore). */
+#undef HAVE_LIBTOXCORE
 
 /* Define to 1 if you have the <limits.h> header file. */
 #undef HAVE_LIMITS_H

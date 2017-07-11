@@ -113,7 +113,8 @@ am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(configdir)" \
 PROGRAMS = $(bin_PROGRAMS)
 am__objects_1 =
 am_clitox_OBJECTS = clitox-clitox-config.$(OBJEXT) \
-	clitox-clitox.$(OBJEXT) $(am__objects_1)
+	clitox-clitox.$(OBJEXT) clitox-toxclient.$(OBJEXT) \
+	clitox-clientlist.$(OBJEXT) $(am__objects_1)
 nodist_clitox_OBJECTS =
 clitox_OBJECTS = $(am_clitox_OBJECTS) $(nodist_clitox_OBJECTS)
 am__DEPENDENCIES_1 =
@@ -407,7 +408,7 @@ nodist_clitox_SOURCES =
 BUILT_SOURCES = 
 CLEANFILES = 
 nobase_dist_include_HEADERS = \
-	clitox.h clitox-config.h
+	clitox.h clitox-config.h toxclient.h clientlist.h
 
 common_src = 
 commonlibs = -L/usr/local/lib/ -largtable2
@@ -416,10 +417,10 @@ commonlibs = -L/usr/local/lib/ -largtable2
 #	clitox
 #
 clitox_SOURCES = \
-	clitox-config.cpp  clitox.cpp \
+	clitox-config.cpp  clitox.cpp toxclient.cpp clientlist.cpp \
 	$(common_src)
 
-clitox_LDADD = $(commonlibs) -lsodium -ltox
+clitox_LDADD = $(commonlibs) -lsodium -ltoxcore
 clitox_CPPFLAGS = $(commoncppflags)
 
 #
@@ -543,8 +544,10 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clitox-clientlist.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clitox-clitox-config.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clitox-clitox.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clitox-toxclient.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
@@ -597,6 +600,34 @@ clitox-clitox.obj: clitox.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='clitox.cpp' object='clitox-clitox.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o clitox-clitox.obj `if test -f 'clitox.cpp'; then $(CYGPATH_W) 'clitox.cpp'; else $(CYGPATH_W) '$(srcdir)/clitox.cpp'; fi`
+
+clitox-toxclient.o: toxclient.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT clitox-toxclient.o -MD -MP -MF $(DEPDIR)/clitox-toxclient.Tpo -c -o clitox-toxclient.o `test -f 'toxclient.cpp' || echo '$(srcdir)/'`toxclient.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/clitox-toxclient.Tpo $(DEPDIR)/clitox-toxclient.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='toxclient.cpp' object='clitox-toxclient.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o clitox-toxclient.o `test -f 'toxclient.cpp' || echo '$(srcdir)/'`toxclient.cpp
+
+clitox-toxclient.obj: toxclient.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT clitox-toxclient.obj -MD -MP -MF $(DEPDIR)/clitox-toxclient.Tpo -c -o clitox-toxclient.obj `if test -f 'toxclient.cpp'; then $(CYGPATH_W) 'toxclient.cpp'; else $(CYGPATH_W) '$(srcdir)/toxclient.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/clitox-toxclient.Tpo $(DEPDIR)/clitox-toxclient.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='toxclient.cpp' object='clitox-toxclient.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o clitox-toxclient.obj `if test -f 'toxclient.cpp'; then $(CYGPATH_W) 'toxclient.cpp'; else $(CYGPATH_W) '$(srcdir)/toxclient.cpp'; fi`
+
+clitox-clientlist.o: clientlist.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT clitox-clientlist.o -MD -MP -MF $(DEPDIR)/clitox-clientlist.Tpo -c -o clitox-clientlist.o `test -f 'clientlist.cpp' || echo '$(srcdir)/'`clientlist.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/clitox-clientlist.Tpo $(DEPDIR)/clitox-clientlist.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='clientlist.cpp' object='clitox-clientlist.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o clitox-clientlist.o `test -f 'clientlist.cpp' || echo '$(srcdir)/'`clientlist.cpp
+
+clitox-clientlist.obj: clientlist.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT clitox-clientlist.obj -MD -MP -MF $(DEPDIR)/clitox-clientlist.Tpo -c -o clitox-clientlist.obj `if test -f 'clientlist.cpp'; then $(CYGPATH_W) 'clientlist.cpp'; else $(CYGPATH_W) '$(srcdir)/clientlist.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/clitox-clientlist.Tpo $(DEPDIR)/clitox-clientlist.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='clientlist.cpp' object='clitox-clientlist.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o clitox-clientlist.obj `if test -f 'clientlist.cpp'; then $(CYGPATH_W) 'clientlist.cpp'; else $(CYGPATH_W) '$(srcdir)/clientlist.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
