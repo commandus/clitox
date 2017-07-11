@@ -32,7 +32,7 @@ clitox_SOURCES= \
 	clitox-config.cpp  clitox.cpp \
 	$(common_src)
 
-clitox_LDADD = $(commonlibs) -lprotobuf
+clitox_LDADD = $(commonlibs) -lsodium -ltox
 clitox_CPPFLAGS = $(commoncppflags)
 
 #

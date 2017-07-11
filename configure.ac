@@ -1,8 +1,8 @@
 AC_PREREQ([2.63])
-AC_INIT([pkt2mon], [0.1], [andrey.ivanov@ikfia.ysn.ru])
+AC_INIT([clitox], [0.1], [andrei.i.ivanov@commandus.com])
 AM_INIT_AUTOMAKE([1.11 foreign no-define subdir-objects])
 AC_CONFIG_FILES([Makefile])
-AC_CONFIG_SRCDIR([pkt2mon.cpp])
+AC_CONFIG_SRCDIR([clitox.cpp])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -25,13 +25,14 @@ esac],
 AM_CONDITIONAL(DEBUG, test x"$debug" = x"true")
 
 # Checks for libraries.
-AC_CHECK_LIB(glfw, glfwInit, [], AC_MSG_ERROR([Could not find libglfw. Try $ ./configure LDFLAGS='-Lyour-glfw-lib-path']))
-AC_CHECK_LIB(GL, glPushMatrix, [], AC_MSG_ERROR([Could not find libGL. Try $ ./configure LDFLAGS='-Lyour-GL-lib-path']))
+AC_CHECK_LIB(tox, tox_new, [], AC_MSG_ERROR([Could not find libtox. Try $ ./configure LDFLAGS='-Lyour-tox-lib-path']))
+AC_CHECK_LIB(sodium, sodium_init, [], AC_MSG_ERROR([Could not find libsodium. Try $ ./configure LDFLAGS='-Lyour-sodium-lib-path']))
 
 # Checks for header files.
 AC_CHECK_HEADERS([fcntl.h limits.h stdint.h string.h sys/time.h termios.h unistd.h])
 AC_CHECK_HEADERS([argtable2.h], [], AC_MSG_ERROR([Could not find argtable2.h. Try $ ./configure CFLAGS='-Iyour-argtable2-include-path]))
-AC_CHECK_HEADERS([GLFW/glfw3.h], [], AC_MSG_ERROR([Could not find GLFW/glfw3.h. Try $ ./configure CFLAGS='-Iyour-GLFW-include-path]))
+AC_CHECK_HEADERS([tox/tox.h], [], AC_MSG_ERROR([Could not find tox/tox.h. Try $ ./configure CFLAGS='-Iyour-c-toxcore-include-path]))
+AC_CHECK_HEADERS([sodium/utils.h], [], AC_MSG_ERROR([Could not find sodium/utils.h. Try $ ./configure CFLAGS='-Iyour-c-sodium-include-path]))
 
 # Checks for typedefs, structures, and compiler characteristics.
 # AC_CHECK_HEADER_STDBOOL

@@ -1,4 +1,4 @@
-#include "pkt2mon-config.h"
+#include "clitox-config.h"
 #include <argtable2.h>
 
 #define DEF_BUFFER_SIZE				4096
@@ -19,11 +19,8 @@
 static const char* progname = "pkt2mon";
 
 
-MonitorConfig::MonitorConfig()
-	: errorcode(0), proto_path(DEF_PROTO_FOLDER), url_control(DEF_URL_CONTROL), url_output(DEF_URL_OUTPUT), 
-	url_tcp_receiver(DEF_TCP_RECEIVER),
-	path_font(DEF_FONT_FILE_PATH), buffer_size(DEF_BUFFER_SIZE), 
-	font_size(DEF_FONT_SIZE), width(DEF_WIDTH), height(DEF_HEIGHT)
+ClitoxConfig::ClitoxConfig()
+	: id("")
 {
 	
 }
@@ -50,28 +47,15 @@ int MonitorConfig::parseCmd
 )
 {
 	// GTFS https://developers.google.com/transit/gtfs/reference/?csw=1
-	struct arg_file *a_proto_path = arg_file0("p", "proto", "<directory path>", "Proto file directory. Default " DEF_PROTO_FOLDER);
-	struct arg_str *a_url_control = arg_str0("c", "control", "<URL>", "Control URL e.g. tcp://84.237.111.36:50000. Default " DEF_URL_CONTROL);
-	struct arg_str *a_url_output = arg_str0("o", "output", "<URL>", "message bus URL e.g. tcp://84.237.111.36:50001. Default " DEF_URL_OUTPUT);
-	struct arg_str *a_url_tcp_receiver = arg_str0("t", "tcp", "<URL>", "TCP test address e.g. tcp://84.237.111.36:50052. Default " DEF_TCP_RECEIVER);
-	
-	struct arg_int *a_buffer_size = arg_int0("b", "buffer", "<size>", "Receiver buffer size. Default 4096");
-	
-	struct arg_str *a_path_font = arg_str0("f", "font-file", "<file path>", "Font file path. Default " DEF_FONT_FILE_PATH);
-	struct arg_int *a_font_size = arg_int0("s", "font-size", "<size>", "Font size. Default " DEF_FONT_SIZE_S);
-
-	struct arg_int *a_width = arg_int0("w", "screen-width", "<size>", "Initial window width. Default " DEF_WIDTH_S);
-	struct arg_int *a_height = arg_int0("h", "screen-height", "<size>", "Initial window height. Default " DEF_HEIGHT_S);
-
+	struct arg_str *a_id = arg_str0("i", "id", "<identifier>", "TOX identifier");
+	struct arg_str *a_ids_to = arg_strn("t", "to", "<identifier>", 0, 100, "Send to clients by TOX identifier");
 	struct arg_lit *a_help = arg_lit0("h", "help", "Show this help");
 	struct arg_end *a_end = arg_end(20);
 
 	void* argtable[] = { 
-		a_proto_path, a_url_control, a_url_output, a_url_tcp_receiver,
-		a_path_font, a_width, a_height,
-		a_buffer_size,
-		a_font_size,
-		a_help, a_end };
+		a_id, a_ids_to,
+		a_help, a_end 
+	};
 
 	int nerrors;
 
@@ -91,7 +75,7 @@ int MonitorConfig::parseCmd
 			arg_print_errors(stderr, a_end, progname);
 		printf("Usage: %s\n",  progname);
 		arg_print_syntax(stdout, argtable, "\n");
-		printf("pkt2mon\n");
+		printf("clitox\n");
 		arg_print_glossary(stdout, argtable, "  %-25s %s\n");
 		arg_freetable(argtable, sizeof(argtable) / sizeof(argtable[0]));
 		return 1;
