@@ -2,8 +2,8 @@
 
 Simple command line interface (CLI) TOX client.
 
-- [Git](git@github.com:commandus/clitox.git)
-- [Site](https://github.com/commandus/clitox)
+- [git@github.com:commandus/clitox.git](git@github.com:commandus/clitox.git)
+- [https://github.com/commandus/clitox](https://github.com/commandus/clitox)
 
 ## Dependencies
 
