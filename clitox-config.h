@@ -9,6 +9,9 @@
 #include <string>
 #include <vector>
 
+#define CMD_RW			0
+#define CMD_GET_ID		1
+
 /**
  * Command line interface (CLI) tool configuration structure
  */
@@ -28,8 +31,10 @@ private:
 	);
 	int errorcode;
 public:
-	// Protobuf
-	std::string id;									///< TOX identifier (in hex)
+	int cmd;
+	std::string file_name;							///< Tox file
+	std::string nick_name;							///< nick name
+	std::string status_message;						///< initial status message
 	std::vector<std::string> ids_to;				///< TOX identifier (in hex)
 
 	ClitoxConfig();
