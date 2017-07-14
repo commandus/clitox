@@ -2,9 +2,7 @@
  * @file clitox.cpp
  */
 
-#if __cplusplus >= 201103L
 #include <thread>
-#endif
 
 #include <argtable2.h>
 #include <string>
@@ -20,6 +18,13 @@
 ToxClient *toxclient  = NULL;
 bool stopRequest = false;
 
+#ifdef _WIN32
+
+void setSignalHandler(int signal)
+{
+}
+
+#else
 void signalHandler(int signal)
 {
 	switch(signal)
@@ -29,9 +34,6 @@ void signalHandler(int signal)
 		if (toxclient)
 			toxclient->stop();
 		std::cerr << MSG_INTERRUPTED << std::endl;
-		break;
-	case SIGHUP:
-		std::cerr << MSG_RELOAD_CONFIG_REQUEST << " nothing to do" << std::endl;
 		break;
 	default:
 		break;
@@ -45,6 +47,7 @@ void setSignalHandler(int signal)
 	action.sa_handler = &signalHandler;
 	sigaction(signal, &action, NULL);
 }
+#endif
 
 void read_loop
 (
@@ -63,7 +66,6 @@ int main(int argc, char** argv)
 {
     // Signal handler
     setSignalHandler(SIGINT);
-    setSignalHandler(SIGHUP);
 
 	ClitoxConfig config(argc, argv);
 	if (config.error())

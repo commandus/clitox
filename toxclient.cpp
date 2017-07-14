@@ -13,9 +13,28 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <unistd.h>
 #include <sodium/utils.h>
 #include <tox/tox.h>
+
+#ifdef _WIN32
+
+#include <Windows.h>
+
+void usleep(__int64 usec)
+{
+	HANDLE timer;
+	LARGE_INTEGER ft;
+
+	ft.QuadPart = -(10 * usec); // Convert to 100 nanosecond interval, negative value indicates relative time
+
+	timer = CreateWaitableTimer(NULL, TRUE, NULL);
+	SetWaitableTimer(timer, &ft, 0, NULL, NULL, 0);
+	WaitForSingleObject(timer, INFINITE);
+	CloseHandle(timer);
+}
+#else
+#include <unistd.h>
+#endif
 
 typedef struct DHT_node 
 {
@@ -296,6 +315,7 @@ int ToxClient::run()
 		usleep(tox_iteration_interval(tox) * 1000);
 	}
 	tox_self_set_status(tox, TOX_USER_STATUS_AWAY);
+	return 0;
 }
 
 void ToxClient::stop()
