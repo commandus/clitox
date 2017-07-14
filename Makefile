@@ -115,7 +115,7 @@ am__objects_1 =
 am_clitox_OBJECTS = clitox-clitox-config.$(OBJEXT) \
 	clitox-clitox.$(OBJEXT) clitox-toxclient.$(OBJEXT) \
 	clitox-clientlist.$(OBJEXT) clitox-toxreceiverstream.$(OBJEXT) \
-	$(am__objects_1)
+	clitox-toxmessage.$(OBJEXT) $(am__objects_1)
 nodist_clitox_OBJECTS =
 clitox_OBJECTS = $(am_clitox_OBJECTS) $(nodist_clitox_OBJECTS)
 am__DEPENDENCIES_1 =
@@ -409,7 +409,7 @@ nodist_clitox_SOURCES =
 BUILT_SOURCES = 
 CLEANFILES = 
 nobase_dist_include_HEADERS = \
-	clitox.h clitox-config.h toxclient.h clientlist.h toxreceiver.h toxreceiverstream.h
+	clitox.h clitox-config.h toxclient.h clientlist.h toxreceiver.h toxreceiverstream.h toxmessage.h
 
 common_src = 
 commonlibs = -L/usr/local/lib/ -largtable2
@@ -418,7 +418,7 @@ commonlibs = -L/usr/local/lib/ -largtable2
 #	clitox
 #
 clitox_SOURCES = \
-	clitox-config.cpp  clitox.cpp toxclient.cpp clientlist.cpp toxreceiverstream.cpp \
+	clitox-config.cpp  clitox.cpp toxclient.cpp clientlist.cpp toxreceiverstream.cpp toxmessage.cpp \
 	$(common_src)
 
 clitox_LDADD = $(commonlibs) -lsodium -ltoxcore
@@ -549,6 +549,7 @@ include ./$(DEPDIR)/clitox-clientlist.Po
 include ./$(DEPDIR)/clitox-clitox-config.Po
 include ./$(DEPDIR)/clitox-clitox.Po
 include ./$(DEPDIR)/clitox-toxclient.Po
+include ./$(DEPDIR)/clitox-toxmessage.Po
 include ./$(DEPDIR)/clitox-toxreceiverstream.Po
 
 .cpp.o:
@@ -644,6 +645,20 @@ clitox-toxreceiverstream.obj: toxreceiverstream.cpp
 #	$(AM_V_CXX)source='toxreceiverstream.cpp' object='clitox-toxreceiverstream.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o clitox-toxreceiverstream.obj `if test -f 'toxreceiverstream.cpp'; then $(CYGPATH_W) 'toxreceiverstream.cpp'; else $(CYGPATH_W) '$(srcdir)/toxreceiverstream.cpp'; fi`
+
+clitox-toxmessage.o: toxmessage.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT clitox-toxmessage.o -MD -MP -MF $(DEPDIR)/clitox-toxmessage.Tpo -c -o clitox-toxmessage.o `test -f 'toxmessage.cpp' || echo '$(srcdir)/'`toxmessage.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/clitox-toxmessage.Tpo $(DEPDIR)/clitox-toxmessage.Po
+#	$(AM_V_CXX)source='toxmessage.cpp' object='clitox-toxmessage.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o clitox-toxmessage.o `test -f 'toxmessage.cpp' || echo '$(srcdir)/'`toxmessage.cpp
+
+clitox-toxmessage.obj: toxmessage.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT clitox-toxmessage.obj -MD -MP -MF $(DEPDIR)/clitox-toxmessage.Tpo -c -o clitox-toxmessage.obj `if test -f 'toxmessage.cpp'; then $(CYGPATH_W) 'toxmessage.cpp'; else $(CYGPATH_W) '$(srcdir)/toxmessage.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/clitox-toxmessage.Tpo $(DEPDIR)/clitox-toxmessage.Po
+#	$(AM_V_CXX)source='toxmessage.cpp' object='clitox-toxmessage.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o clitox-toxmessage.obj `if test -f 'toxmessage.cpp'; then $(CYGPATH_W) 'toxmessage.cpp'; else $(CYGPATH_W) '$(srcdir)/toxmessage.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

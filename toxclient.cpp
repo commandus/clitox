@@ -142,9 +142,11 @@ void write_tox
 	tox_get_savedata(tox, (uint8_t *) savedata);
 
 	FILE *f = fopen(fn.c_str(), "wb");
-	fwrite(savedata, size, 1, f);
-	fclose(f);
-
+	if (f)
+	{
+		fwrite(savedata, size, 1, f);
+		fclose(f);
+	}
 	free(savedata);
 }
 

@@ -115,7 +115,7 @@ am__objects_1 =
 am_clitox_OBJECTS = clitox-clitox-config.$(OBJEXT) \
 	clitox-clitox.$(OBJEXT) clitox-toxclient.$(OBJEXT) \
 	clitox-clientlist.$(OBJEXT) clitox-toxreceiverstream.$(OBJEXT) \
-	$(am__objects_1)
+	clitox-toxmessage.$(OBJEXT) $(am__objects_1)
 nodist_clitox_OBJECTS =
 clitox_OBJECTS = $(am_clitox_OBJECTS) $(nodist_clitox_OBJECTS)
 am__DEPENDENCIES_1 =
@@ -409,7 +409,7 @@ nodist_clitox_SOURCES =
 BUILT_SOURCES = 
 CLEANFILES = 
 nobase_dist_include_HEADERS = \
-	clitox.h clitox-config.h toxclient.h clientlist.h toxreceiver.h toxreceiverstream.h
+	clitox.h clitox-config.h toxclient.h clientlist.h toxreceiver.h toxreceiverstream.h toxmessage.h
 
 common_src = 
 commonlibs = -L/usr/local/lib/ -largtable2
@@ -418,7 +418,7 @@ commonlibs = -L/usr/local/lib/ -largtable2
 #	clitox
 #
 clitox_SOURCES = \
-	clitox-config.cpp  clitox.cpp toxclient.cpp clientlist.cpp toxreceiverstream.cpp \
+	clitox-config.cpp  clitox.cpp toxclient.cpp clientlist.cpp toxreceiverstream.cpp toxmessage.cpp \
 	$(common_src)
 
 clitox_LDADD = $(commonlibs) -lsodium -ltoxcore
@@ -549,6 +549,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clitox-clitox-config.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clitox-clitox.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clitox-toxclient.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clitox-toxmessage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clitox-toxreceiverstream.Po@am__quote@
 
 .cpp.o:
@@ -644,6 +645,20 @@ clitox-toxreceiverstream.obj: toxreceiverstream.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='toxreceiverstream.cpp' object='clitox-toxreceiverstream.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o clitox-toxreceiverstream.obj `if test -f 'toxreceiverstream.cpp'; then $(CYGPATH_W) 'toxreceiverstream.cpp'; else $(CYGPATH_W) '$(srcdir)/toxreceiverstream.cpp'; fi`
+
+clitox-toxmessage.o: toxmessage.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT clitox-toxmessage.o -MD -MP -MF $(DEPDIR)/clitox-toxmessage.Tpo -c -o clitox-toxmessage.o `test -f 'toxmessage.cpp' || echo '$(srcdir)/'`toxmessage.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/clitox-toxmessage.Tpo $(DEPDIR)/clitox-toxmessage.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='toxmessage.cpp' object='clitox-toxmessage.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o clitox-toxmessage.o `test -f 'toxmessage.cpp' || echo '$(srcdir)/'`toxmessage.cpp
+
+clitox-toxmessage.obj: toxmessage.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT clitox-toxmessage.obj -MD -MP -MF $(DEPDIR)/clitox-toxmessage.Tpo -c -o clitox-toxmessage.obj `if test -f 'toxmessage.cpp'; then $(CYGPATH_W) 'toxmessage.cpp'; else $(CYGPATH_W) '$(srcdir)/toxmessage.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/clitox-toxmessage.Tpo $(DEPDIR)/clitox-toxmessage.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='toxmessage.cpp' object='clitox-toxmessage.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o clitox-toxmessage.obj `if test -f 'toxmessage.cpp'; then $(CYGPATH_W) 'toxmessage.cpp'; else $(CYGPATH_W) '$(srcdir)/toxmessage.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

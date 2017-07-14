@@ -5,6 +5,54 @@ Simple command line interface (CLI) TOX client.
 - [Repository git@github.com:commandus/clitox.git](git@github.com:commandus/clitox.git)
 - [Site https://github.com/commandus/clitox](https://github.com/commandus/clitox)
 
+## Usage
+
+clitox <Tox ID> 
+
+For instance, 
+
+```
+clitox DE93C25176BBB999F6A18F44C163893561BF330C3CAC53FA07DF51A3F9C06E192EB9141124BB
+```
+
+will send messages to one client and
+
+
+```
+clitox DE93C25176BBB999F6A18F44C163893561BF330C3CAC53FA07DF51A3F9C06E192EB9141124BB 59E3FD36F1855FF729CBAFCA88913812ED7E314E54CA81E1F795BA42A5215D540274F8A17A49
+```
+
+will send messages to 2 clients both
+
+### Stream
+
+You can redirect or pipe stdin and stdout stream to other programs and scripts.
+
+### Options
+
+Show all options:
+
+```
+clitox --help
+```
+
+#### Use different configuration files
+
+You can use the -f option to run utility with other Tox ID that saved in config file.
+```
+clitox -f tox_config.file
+DE93C25176BBB999F6A18F44C163893561BF330C3CAC53FA07DF51A3F9C06E192EB9141124BB
+```
+
+By default clitox.tox file in current directory is used.
+
+#### Print Tox ID
+
+```
+clitox -i
+DE93C25176BBB999F6A18F44C163893561BF330C3CAC53FA07DF51A3F9C06E192EB9141124BB
+```
+
 ## Build
 
 ```
@@ -20,5 +68,3 @@ sudo make install
 - [c-toxcore](https://github.com/TokTok/c-toxcore)
 - [The Sodium crypto library (libsodium)](https://github.com/jedisct1/libsodium)
 - [argtable2)](http://argtable.sourceforge.net/doc/argtable2.html)
-
-
