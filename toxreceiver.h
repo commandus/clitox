@@ -28,7 +28,7 @@ public:
 		const std::string &value,
 		void *user_data
 	) = 0;
-	virtual void onFriendRequest
+	virtual bool onFriendRequest
 	(
 		// Tox *tox,
 		ToxClient *toxclient,
@@ -36,6 +36,15 @@ public:
 		const std::string &name,
 		void *user_data
 	) = 0;
+	
+	virtual bool nextMessageTo
+	(
+		uint32_t  *friend_number,
+		TOX_MESSAGE_TYPE *message_type,
+		std::string *m
+	) = 0;
+	
+	void read_line();
 };
 
 #endif // TOXRECEIVER_H

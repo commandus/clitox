@@ -1,4 +1,5 @@
 #include "clitox-config.h"
+#include <iostream>
 #include <argtable2.h>
 
 static const char* progname = "clitox";
@@ -31,16 +32,16 @@ int ClitoxConfig::parseCmd
 )
 {
 	// GTFS https://developers.google.com/transit/gtfs/reference/?csw=1
-	struct arg_lit *a_new_id = arg_lit0("c", "create", "create a new Tox ID");
-	struct arg_str *a_file_name = arg_str0("f", "file", "<TOX file name>", "Tox configuration file. Default " DEF_TOX_FILE_NAME);
+	struct arg_lit *a_print_tox_id = arg_lit0("i", "id", "Print Tox ID");
+	struct arg_str *a_file_name = arg_str0("f", "file", "<file>", "Tox configuration file. Default " DEF_TOX_FILE_NAME);
 	struct arg_str *a_nick_name = arg_str0("n", "name", "<nick name>", "nick name");
-	struct arg_str *a_status_message = arg_str0("s", "status", "<status message>", "initial status message");
-	struct arg_str *a_ids_to = arg_strn("t", "to", "<identifier>", 0, 100, "Send to clients by TOX identifier");
+	struct arg_str *a_status_message = arg_str0("s", "status", "<text>", "initial status message");
+	struct arg_str *a_ids_to = arg_strn(NULL, NULL, "<Tox ID>", 0, 100, "Send to clients by TOX identifier");
 	struct arg_lit *a_help = arg_lit0("h", "help", "Show this help");
 	struct arg_end *a_end = arg_end(20);
 
 	void* argtable[] = { 
-		a_new_id, a_file_name, a_nick_name, a_ids_to, a_status_message,
+		a_print_tox_id, a_file_name, a_nick_name, a_ids_to, a_status_message,
 		a_help, a_end 
 	};
 
@@ -55,13 +56,16 @@ int ClitoxConfig::parseCmd
 	// Parse the command line as defined by argtable[]
 	nerrors = arg_parse(argc, argv, argtable);
 
-	if (a_new_id->count)
-		cmd = CMD_GET_ID;
+	if (a_print_tox_id->count)
+		cmd = CMD_PRINT_TOX_ID;
+	else
+		cmd = CMD_RW;
 
 	if (cmd == CMD_RW)
 	{
 		if (a_ids_to->count == 0)
 		{
+			std::cerr << "Tox ID missed." << std::endl;
 			nerrors++;
 		}
 	}
@@ -87,10 +91,10 @@ int ClitoxConfig::parseCmd
 	{
 		if (nerrors)
 			arg_print_errors(stderr, a_end, progname);
-		printf("Usage: %s\n",  progname);
-		arg_print_syntax(stdout, argtable, "\n");
-		printf("clitox\n");
-		arg_print_glossary(stdout, argtable, "  %-25s %s\n");
+		std::cerr << "Usage: " << progname << std::endl;
+		arg_print_syntax(stderr, argtable, "\n");
+		std::cerr << "Simplest Tox CLI client" << std::endl;
+		arg_print_glossary(stderr, argtable, "  %-25s %s\n");
 		arg_freetable(argtable, sizeof(argtable) / sizeof(argtable[0]));
 		return 1;
 	}

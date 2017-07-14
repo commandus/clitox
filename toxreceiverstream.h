@@ -1,10 +1,13 @@
 #ifndef TOXRECEIVERSTREAM_H
 #define TOXRECEIVERSTREAM_H
 
+#include <inttypes.h>
 #include <iostream>
+#include <queue>
 #include <tox/tox.h>
 #include "toxreceiver.h"
 #include "toxclient.h"
+#include "toxmessage.h"
 
 class ToxReceiverStream : public ToxReceiver
 {
@@ -12,6 +15,7 @@ private:
 	std::istream &istream;
 	std::ostream &ostream;
 	std::ostream &estream;
+	std::queue<ToxMessage> messages;
 public:
 	ToxReceiverStream
 	(
@@ -39,14 +43,23 @@ public:
 		const std::string &value,
 		void *user_data
 	) override;
-	virtual void onFriendRequest(
+	virtual bool onFriendRequest(
 		// Tox *tox,
 		ToxClient *toxclient,
 		const uint8_t *key, 
 		const std::string &name,
 		void *user_data
 	) override;
-
+	virtual bool nextMessageTo
+	(
+		uint32_t *friend_number,
+		TOX_MESSAGE_TYPE *message_type,
+		std::string *m
+	)  override;
+	void readLine
+	(
+		ToxClient *toxclient
+	);
 };
 
 #endif // TOXRECEIVERSTREAM_H

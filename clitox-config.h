@@ -9,8 +9,8 @@
 #include <string>
 #include <vector>
 
-#define CMD_RW			0
-#define CMD_GET_ID		1
+#define CMD_RW				0
+#define CMD_PRINT_TOX_ID	1
 
 /**
  * Command line interface (CLI) tool configuration structure

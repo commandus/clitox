@@ -24,6 +24,7 @@ typedef struct DHT_node
 	const char key_hex[TOX_PUBLIC_KEY_SIZE*2 + 1];
 } DHT_node;
 
+// TODO load bootstrap and parse json
 /*
  * https://nodes.tox.chat/json
  * {
@@ -57,7 +58,7 @@ static const DHT_node nodes[] =
 	{"biribiri.org",               33445, "F404ABAA1C99A9D37D61AB54898F56793E1DEF8BD46B1038B9D822E8460FAB67"}
 };
 
-static std::string hex2bin
+static std::string hex_to_bin
 (
 	const std::string &value
 )
@@ -68,7 +69,6 @@ static std::string hex2bin
 	sodium_hex2bin((unsigned char *) r.c_str(), sz, value.c_str(), sz * 2, NULL, NULL, NULL);
 	return r;
 }
-
 
 static std::string str_addr_hex
 (
@@ -81,14 +81,6 @@ static std::string str_addr_hex
 	{
 		tox_id_hex[i] = toupper(tox_id_hex[i]);
 	}
-    /*
-	std::stringstream ss;
-	ss << std::hex << std::setfill('0') << std::uppercase;
-	for (size_t i = 0; i < sizeof(TOX_ADDRESS_SIZE); i++) 
-		ss << std::setw(2) << static_cast<unsigned>(toxId[i]);
-	std::string r = ss.str();
-	return r;
-	*/
 	return std::string(tox_id_hex, TOX_ADDRESS_SIZE * 2);
 }
 
@@ -99,7 +91,7 @@ void bootstrap
 {
 	for (size_t i = 0; i < sizeof(nodes)/sizeof(DHT_node); i ++) 
 	{
-		tox_bootstrap(tox, nodes[i].ip, nodes[i].port, (unsigned char *) hex2bin(nodes[i].key_hex).c_str(), NULL);
+		tox_bootstrap(tox, nodes[i].ip, nodes[i].port, (unsigned char *) hex_to_bin(nodes[i].key_hex).c_str(), NULL);
 	}
 }
  
@@ -130,11 +122,6 @@ bool read_tox
 		*retval = tox_new(&options, NULL);
 		free(savedata);
 		
-		uint8_t toxId[TOX_ADDRESS_SIZE];
-		tox_self_get_address(*retval, toxId);
-		std::string r = str_addr_hex(toxId);
-		std::cout << r << std::endl;
-
 		return true;
 	} 
 	else 
@@ -161,14 +148,34 @@ void write_tox
 	free(savedata);
 }
 
-std::string ToxClient::hex2bin(const std::string &value)
-{
-	return hex2bin(value);
-}
-
 ToxClient *ToxClient::findByTox(Tox *tox)
 {
 	return (ToxClient *) ClientList::getInstance().get(tox);
+}
+
+std::string ToxClient::getIdHex()
+{
+	return ToxClient::getIdHex(tox);
+}
+
+std::string ToxClient::getIdHex(Tox *tox)
+{
+	uint8_t toxId[TOX_ADDRESS_SIZE];
+	tox_self_get_address(tox, toxId);
+	return str_addr_hex(toxId);
+}
+
+std::string ToxClient::getIdHex
+(
+	const std::string &fn
+)
+{
+	Tox *tox;
+	if (!read_tox(&tox, fn))
+		return "";
+	std::string r = getIdHex(tox);
+	tox_kill(tox);
+	return r;
 }
 
 void ToxClient::addToList()
@@ -221,9 +228,15 @@ void self_connection_status_cb
 		cli->connection_status(connection_status, user_data);
 }
 
+ToxClient::ToxClient()
+	: stopped(false), connectionStatus(TOX_CONNECTION_NONE), fileName(""), toxReceiver(NULL)
+{
+	tox = tox_new(NULL, NULL);
+}
+
 ToxClient::ToxClient
 (
- 	const std::string &filename,
+	const std::string &filename,
 	const std::string &nick,
 	const std::string &status,
 	ToxReceiver *toxreceiver
@@ -231,12 +244,9 @@ ToxClient::ToxClient
 	: stopped(false), connectionStatus(TOX_CONNECTION_NONE), fileName(filename), toxReceiver(toxreceiver)
 {
 	// Tox_Options *options = tox_options_new(NULL);
-	if (read_tox(&tox, filename))
+	if (!read_tox(&tox, filename))
 	{
-	}
-	else
-	{
-		getId();
+		newId();
 		write_tox(tox, filename);
 	}
 	setNick(nick);
@@ -257,7 +267,29 @@ int ToxClient::run()
 	tox_self_set_status(tox, TOX_USER_STATUS_NONE);
 	tox_self_set_status_message(tox, (const uint8_t *) "oooo", 4, NULL);
 	
-	while (!stopped) {
+	while (!stopped) 
+	{
+		if (toxReceiver)
+		{
+			
+			TOX_MESSAGE_TYPE message_type;
+			std::string m;
+			uint32_t friend_number;
+			while (toxReceiver->nextMessageTo(&friend_number, &message_type, &m))
+			{
+				if (friend_number != 0)
+				{
+					sendFriend(friend_number, message_type, m);
+				}
+				else
+				{
+					for (std::vector<uint32_t>::const_iterator it(friends.begin()); it != friends.end(); ++it)
+					{
+						sendFriend(*it, message_type, m);
+					}
+				}
+			}
+		}
 		tox_iterate(tox, NULL);
 		usleep(tox_iteration_interval(tox) * 1000);
 	}
@@ -281,11 +313,12 @@ Tox *ToxClient::getTox() const
 	return tox;
 }
 
-std::string ToxClient::getId()
+std::string ToxClient::newId()
 {
 	uint8_t toxId[TOX_ADDRESS_SIZE];
 	tox_self_get_address(tox, toxId);
 	std::string r = str_addr_hex(toxId);
+
 	if (toxReceiver)
 		toxReceiver->onId(this, r);
 	return r;
@@ -308,22 +341,10 @@ void ToxClient::connection_status
 )
 {
 	connectionStatus = connection_status;
+	if (toxReceiver)
+		toxReceiver->onConnectionStatus(this, connection_status);
 }
 
-/**
- * 	switch (getConnectionStatus()) 
-	{
-		case TOX_CONNECTION_NONE:
-			printf("Offline\n");
-			break;
-		case TOX_CONNECTION_TCP:
-			printf("Online, using TCP\n");
-			break;
-		case TOX_CONNECTION_UDP:
-			printf("Online, using UDP\n");
-			break;
-	}
-	*/
 TOX_CONNECTION ToxClient::getConnectionStatus()
 {
 	return connectionStatus;
@@ -353,6 +374,17 @@ void ToxClient::friend_request
 	if (toxReceiver)
 		toxReceiver->onFriendRequest(this, public_key, std::string((char *) message, length), user_data);
 	tox_friend_add_norequest(tox, public_key, NULL);
+	write_tox(tox, fileName);
+}
+
+void ToxClient::sendFriend
+(
+	uint32_t friend_number, 
+	TOX_MESSAGE_TYPE message_type,
+	const std::string &message
+)
+{
+	tox_friend_send_message(tox, friend_number, message_type, (const uint8_t*) message.c_str(), message.length(), NULL);
 }
 
 void ToxClient::sendFriendText
@@ -361,7 +393,7 @@ void ToxClient::sendFriendText
 	const std::string &message
 )
 {
-	tox_friend_send_message(tox, friend_number, TOX_MESSAGE_TYPE_NORMAL, (const uint8_t*) message.c_str(), message.length(), NULL);
+	sendFriend(friend_number, TOX_MESSAGE_TYPE_NORMAL, message);
 }
 
 void ToxClient::sendFriendAction
@@ -370,7 +402,7 @@ void ToxClient::sendFriendAction
 	const std::string &action
 )
 {
-	tox_friend_send_message(tox, friend_number, TOX_MESSAGE_TYPE_ACTION, (const uint8_t*) action.c_str(), action.length(), NULL);
+	sendFriend(friend_number, TOX_MESSAGE_TYPE_ACTION, action);
 }
 
 std::string ToxClient::getFriendName
@@ -385,4 +417,31 @@ std::string ToxClient::getFriendName
 	uint8_t name[TOX_MAX_NAME_LENGTH];
     tox_friend_get_name(tox, friend_number, name, 0);
 	return std::string((char *) name, size);
+}
+
+void ToxClient::clearFriends
+(
+)
+{
+	friends.clear();
+}
+
+uint32_t ToxClient::addFriend
+(
+	const std::string &tox_id_hex
+)
+{
+	std::string toxid = hex_to_bin(tox_id_hex);
+	// tox_friend_add(tox, (const uint8_t *) tox_id_hex.c_str(), (const uint8_t *) tox_id_hex.c_str(), tox_id_hex.length(), NULL);
+	TOX_ERR_FRIEND_ADD e;
+	uint32_t r = tox_friend_by_public_key(tox, (const uint8_t *) toxid.c_str(), NULL);
+	if (r == 4294967295)
+	{
+		r = tox_friend_add_norequest(tox, (const uint8_t *) toxid.c_str(), &e);
+		if (r == 4294967295)
+			std::cerr << "Error " << e << std::endl;
+	}
+	if (r != 4294967295)
+		friends.push_back(r);
+	return r;
 }

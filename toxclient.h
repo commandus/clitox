@@ -6,10 +6,19 @@
 #define TOXCLIENT_H
 
 #include <string>
+#include <vector>
+#include <inttypes.h>
+
 #include <tox/tox.h>
 
 #include "clientlist.h"
 #include "toxreceiver.h"
+
+void write_tox
+(
+	const Tox *tox,
+	const std::string &fn
+);
 
 class ToxClient
 {
@@ -19,12 +28,13 @@ private:
 	std::string fileName;
 	ToxReceiver *toxReceiver;
 	Tox *tox;
+	std::vector <uint32_t> friends;
 
-	static std::string hex2bin(const std::string &value);
 	void addToList();
 	void rmFromList();
 
 public:
+	ToxClient();
 	ToxClient
 	(
 		const std::string &filename,
@@ -36,9 +46,12 @@ public:
 	~ToxClient();
 	
 	Tox *getTox() const;
-	static ToxClient *findByTox(Tox *);
+	static ToxClient *findByTox(Tox *tox);
+	std::string getIdHex();
+	static std::string getIdHex(Tox *tox);
+	static std::string getIdHex(const std::string &fn);
 
-	std::string getId();
+	std::string newId();
 	void setNick(const std::string &nick);
 	void setStatus(const std::string &message);
 
@@ -65,6 +78,12 @@ public:
 		void *user_data
 	);
 
+	void sendFriend
+	(
+		uint32_t friend_number, 
+		TOX_MESSAGE_TYPE message_type,
+		const std::string &message
+	);
 	void sendFriendText
 	(
 		uint32_t friend_number, 
@@ -81,7 +100,14 @@ public:
 	(
 		uint32_t friend_number
 	);
+
+	void clearFriends();
 	
+	uint32_t addFriend
+	(
+		const std::string &tox_id_hex
+	);
+
 	int run();
 	
 	void stop();
