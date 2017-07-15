@@ -63,8 +63,22 @@ make
 sudo make install
 ```
 
+### Windows
+
+Refer to [TokTok/c-toxcore installation instructions] (https://github.com/TokTok/c-toxcore/blob/master/INSTALL.md#windows) how to obtain
+dll, libs and headers for Visual Studio.
+
+Open Visual Studio solution win/clitox/clitox.sln file, check Project properties.
+
+Set include and lib path.
+                                                                                        
+You can download clitox.exe executable and libtox.dll (32bit) from the project releases.
+
+Windows issues: client do not check and translate character codepage. You need set UTF-8 encoding in the console manually, or use pipes from/to programs working with UTF-8.
+
+
 ## Dependencies
 
 - [c-toxcore](https://github.com/TokTok/c-toxcore)
 - [The Sodium crypto library (libsodium)](https://github.com/jedisct1/libsodium)
-- [argtable2)](http://argtable.sourceforge.net/doc/argtable2.html)
+- [argtable2](http://argtable.sourceforge.net/doc/argtable2.html)
