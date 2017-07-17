@@ -2,7 +2,7 @@
 
 Simple command line interface (CLI) TOX client.
 
-- [Repository git@github.com:commandus/clitox.git](git@github.com:commandus/clitox.git)
+- [Repository git@github.com:commandus/clitox.git](https://github.com/commandus/clitox.git)
 - [Site https://github.com/commandus/clitox](https://github.com/commandus/clitox)
 
 ## Usage
