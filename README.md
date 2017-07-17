@@ -82,3 +82,10 @@ Windows issues: client do not check and translate character codepage. You need s
 - [c-toxcore](https://github.com/TokTok/c-toxcore)
 - [The Sodium crypto library (libsodium)](https://github.com/jedisct1/libsodium)
 - [argtable2](http://argtable.sourceforge.net/doc/argtable2.html)
+
+Make each libraries static
+```
+./configure --enable-static --disable-shared
+...
+```
+if you want.
