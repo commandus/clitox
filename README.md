@@ -90,15 +90,3 @@ Make each libraries static
 ```
 if you want.
 
-### OS X
-
-Add path to /usr/local/lib:
-
-```
-export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/lib
-./configure LDFLAGS='-L/usr/local/lib' CFLAGS='/usr/local/include'
-```
-
-does not work.
-
-
