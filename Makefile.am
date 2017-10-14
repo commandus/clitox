@@ -2,9 +2,9 @@ SUBDIRS = .
 ACLOCAL_AMFLAGS = -I m4
 
 if DEBUG
-commoncppflags = -std=c++11 -g3 -O0
+commoncppflags = -std=c++11 -g3 -O0 -I/usr/local/include
 else
-commoncppflags = -std=c++11 -O2
+commoncppflags = -std=c++11 -O2 -I/usr/local/include
 endif
 
 #

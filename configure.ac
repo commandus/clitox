@@ -24,11 +24,13 @@ esac],
 
 AM_CONDITIONAL(DEBUG, test x"$debug" = x"true")
 
-# Checks for libraries.
+# Checks for libraries. Add /usr/local/lib for OS X
+LDFLAGS="$LDFLAGS -L/usr/local/lib"
 AC_CHECK_LIB(toxcore, tox_new, [], AC_MSG_ERROR([Could not find libtoxcore. Try $ ./configure LDFLAGS='-Lyour-toxcore-lib-path']))
 AC_CHECK_LIB(sodium, sodium_init, [], AC_MSG_ERROR([Could not find libsodium. Try $ ./configure LDFLAGS='-Lyour-sodium-lib-path']))
 
-# Checks for header files.
+# Checks for header files. Add /usr/local/include for IS X.
+CFLAGS="$CFLAGS -I/usr/local/include"
 AC_CHECK_HEADERS([fcntl.h limits.h stdint.h string.h sys/time.h termios.h unistd.h])
 AC_CHECK_HEADERS([argtable2.h], [], AC_MSG_ERROR([Could not find argtable2.h. Try $ ./configure CFLAGS='-Iyour-argtable2-include-path]))
 AC_CHECK_HEADERS([tox/tox.h], [], AC_MSG_ERROR([Could not find tox/tox.h. Try $ ./configure CFLAGS='-Iyour-c-toxcore-include-path]))
