@@ -388,7 +388,6 @@ pdfdir = @pdfdir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
 psdir = @psdir@
-runstatedir = @runstatedir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
@@ -399,8 +398,8 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = .
 ACLOCAL_AMFLAGS = -I m4
-@DEBUG_FALSE@commoncppflags = -std=c++11 -O2
-@DEBUG_TRUE@commoncppflags = -std=c++11 -g3 -O0
+@DEBUG_FALSE@commoncppflags = -std=c++11 -O2 -I/usr/local/include
+@DEBUG_TRUE@commoncppflags = -std=c++11 -g3 -O0 -I/usr/local/include
 
 #
 #	Exclude generated sources from distribution
