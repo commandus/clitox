@@ -1,3 +1,4 @@
+#include <stddef.h>
 #include "clientlist.h"
 
 ClientList::ClientList()
@@ -23,7 +24,7 @@ void ClientList::put(void *key, void *value)
 
 void ClientList::remove(void *key)
 {
-	std::map<void *, void *>::const_iterator it = map.find(key);
+	std::map<void *, void *>::iterator it = map.find(key);
 	if (it != map.end())
 		map.erase(it);
 }

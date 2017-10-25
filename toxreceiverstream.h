@@ -29,12 +29,12 @@ public:
 		// Tox *tox,
 		ToxClient *toxclient,
 		const std::string &valuehex
-	) override;
+	);
 	virtual void onConnectionStatus(
 		// Tox *tox,
 		ToxClient *toxclient,
 		TOX_CONNECTION value
-	) override;
+	);
 	virtual void onMessage
 	(
 		// Tox *tox,
@@ -42,20 +42,20 @@ public:
 		uint32_t friend_number, 
 		const std::string &value,
 		void *user_data
-	) override;
+	);
 	virtual bool onFriendRequest(
 		// Tox *tox,
 		ToxClient *toxclient,
 		const uint8_t *key, 
 		const std::string &name,
 		void *user_data
-	) override;
+	);
 	virtual bool nextMessageTo
 	(
 		uint32_t *friend_number,
 		TOX_MESSAGE_TYPE *message_type,
 		std::string *m
-	)  override;
+	);
 	void readLine
 	(
 		ToxClient *toxclient
