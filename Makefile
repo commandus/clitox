@@ -115,7 +115,8 @@ am__objects_1 =
 am_clitox_OBJECTS = clitox-clitox-config.$(OBJEXT) \
 	clitox-clitox.$(OBJEXT) clitox-toxclient.$(OBJEXT) \
 	clitox-clientlist.$(OBJEXT) clitox-toxreceiverstream.$(OBJEXT) \
-	clitox-toxmessage.$(OBJEXT) $(am__objects_1)
+	clitox-toxmessage.$(OBJEXT) clitox-toxreceiverjava.$(OBJEXT) \
+	$(am__objects_1)
 nodist_clitox_OBJECTS =
 clitox_OBJECTS = $(am_clitox_OBJECTS) $(nodist_clitox_OBJECTS)
 am__DEPENDENCIES_1 =
@@ -409,7 +410,8 @@ nodist_clitox_SOURCES =
 BUILT_SOURCES = 
 CLEANFILES = 
 nobase_dist_include_HEADERS = \
-	clitox.h clitox-config.h toxclient.h clientlist.h toxreceiver.h toxreceiverstream.h toxmessage.h
+	clitox.h clitox-config.h toxclient.h clientlist.h toxreceiver.h toxreceiverstream.h toxmessage.h \
+	toxreceiverjava.h
 
 common_src = 
 commonlibs = -L/usr/local/lib/ -largtable2
@@ -419,6 +421,7 @@ commonlibs = -L/usr/local/lib/ -largtable2
 #
 clitox_SOURCES = \
 	clitox-config.cpp  clitox.cpp toxclient.cpp clientlist.cpp toxreceiverstream.cpp toxmessage.cpp \
+	toxreceiverjava.cpp \
 	$(common_src)
 
 clitox_LDADD = $(commonlibs) -lsodium -ltoxcore
@@ -550,6 +553,7 @@ include ./$(DEPDIR)/clitox-clitox-config.Po
 include ./$(DEPDIR)/clitox-clitox.Po
 include ./$(DEPDIR)/clitox-toxclient.Po
 include ./$(DEPDIR)/clitox-toxmessage.Po
+include ./$(DEPDIR)/clitox-toxreceiverjava.Po
 include ./$(DEPDIR)/clitox-toxreceiverstream.Po
 
 .cpp.o:
@@ -659,6 +663,20 @@ clitox-toxmessage.obj: toxmessage.cpp
 #	$(AM_V_CXX)source='toxmessage.cpp' object='clitox-toxmessage.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o clitox-toxmessage.obj `if test -f 'toxmessage.cpp'; then $(CYGPATH_W) 'toxmessage.cpp'; else $(CYGPATH_W) '$(srcdir)/toxmessage.cpp'; fi`
+
+clitox-toxreceiverjava.o: toxreceiverjava.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT clitox-toxreceiverjava.o -MD -MP -MF $(DEPDIR)/clitox-toxreceiverjava.Tpo -c -o clitox-toxreceiverjava.o `test -f 'toxreceiverjava.cpp' || echo '$(srcdir)/'`toxreceiverjava.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/clitox-toxreceiverjava.Tpo $(DEPDIR)/clitox-toxreceiverjava.Po
+#	$(AM_V_CXX)source='toxreceiverjava.cpp' object='clitox-toxreceiverjava.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o clitox-toxreceiverjava.o `test -f 'toxreceiverjava.cpp' || echo '$(srcdir)/'`toxreceiverjava.cpp
+
+clitox-toxreceiverjava.obj: toxreceiverjava.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT clitox-toxreceiverjava.obj -MD -MP -MF $(DEPDIR)/clitox-toxreceiverjava.Tpo -c -o clitox-toxreceiverjava.obj `if test -f 'toxreceiverjava.cpp'; then $(CYGPATH_W) 'toxreceiverjava.cpp'; else $(CYGPATH_W) '$(srcdir)/toxreceiverjava.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/clitox-toxreceiverjava.Tpo $(DEPDIR)/clitox-toxreceiverjava.Po
+#	$(AM_V_CXX)source='toxreceiverjava.cpp' object='clitox-toxreceiverjava.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o clitox-toxreceiverjava.obj `if test -f 'toxreceiverjava.cpp'; then $(CYGPATH_W) 'toxreceiverjava.cpp'; else $(CYGPATH_W) '$(srcdir)/toxreceiverjava.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
