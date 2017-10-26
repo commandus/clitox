@@ -2,7 +2,7 @@
 #define TOXRECEIVER_H
 
 #include <string>
-// #include <tox/tox.h>
+
 class ToxClient;
 
 class ToxReceiver

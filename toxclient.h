@@ -14,6 +14,10 @@
 #include "clientlist.h"
 #include "toxreceiver.h"
 
+#ifdef __ANDROID__
+#include "toxreceiverjava.h"
+#endif
+
 void write_tox
 (
 	const Tox *tox,
@@ -27,6 +31,7 @@ private:
 	TOX_CONNECTION connectionStatus;
 	std::string fileName;
 	ToxReceiver *toxReceiver;
+    bool own_receiver;
 	Tox *tox;
 	std::vector <uint32_t> friends;
 
@@ -35,17 +40,30 @@ private:
 
 public:
 	ToxClient();
+
 	ToxClient
 	(
 		const std::string &filename,
 		const std::string &nick_name,
-		const std::string &status,
-		ToxReceiver *toxreceiver
+		const std::string &status
 	);
 
-	~ToxClient();
-	
-	Tox *getTox() const;
+    ~ToxClient();
+
+    void setReceiver
+    (
+        ToxReceiver *toxreceiver
+    );
+
+#ifdef __ANDROID__
+    void setReceiverJava
+    (
+        JNIEnv *env,
+        jobject obj
+    );
+#endif
+
+    Tox *getTox() const;
 	static ToxClient *findByTox(Tox *tox);
 	std::string getIdHex();
 	static std::string getIdHex(Tox *tox);

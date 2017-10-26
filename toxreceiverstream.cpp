@@ -13,7 +13,6 @@ ToxReceiverStream::ToxReceiverStream
 
 ToxReceiverStream::~ToxReceiverStream()
 {
-
 }
 
 void ToxReceiverStream::onId

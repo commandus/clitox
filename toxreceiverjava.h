@@ -1,5 +1,8 @@
-#ifndef TOXRECEIVERSTREAM_H
-#define TOXRECEIVERSTREAM_H
+#ifndef TOXRECEIVERJAVA_H
+#define TOXRECEIVERJAVA_H
+#ifdef __ANDROID__
+#include <jni.h>
+#include <android/log.h>
 
 #include <inttypes.h>
 #include <iostream>
@@ -9,21 +12,24 @@
 #include "toxclient.h"
 #include "toxmessage.h"
 
-class ToxReceiverStream : public ToxReceiver
+class ToxReceiverJava : public ToxReceiver
 {
 private:
-	std::istream &istream;
-	std::ostream &ostream;
-	std::ostream &estream;
+    JNIEnv *jenv;
+    jclass jcls;
+    jmethodID jOnId;
+    jmethodID jOnConnectionStatus;
+    jmethodID jOnMessage;
+    jmethodID jOnFriendRequest;
+    jmethodID jNextMessageTo;
 	std::queue<ToxMessage> messages;
 public:
-	ToxReceiverStream
+	ToxReceiverJava
 	(
-		std::istream &i_stream,
-		std::ostream &o_stream,
-		std::ostream &e_stream
+        JNIEnv *env,
+        jobject obj
 	);
-    virtual ~ToxReceiverStream();
+    virtual ~ToxReceiverJava();
 
 	virtual void onId(
 		// Tox *tox,
@@ -62,4 +68,5 @@ public:
 	);
 };
 
-#endif // TOXRECEIVERSTREAM_H
+#endif
+#endif

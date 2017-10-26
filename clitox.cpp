@@ -92,7 +92,8 @@ int main(int argc, char** argv)
 			std::cerr << "Tox ID: " << r << std::endl;
 			
 			ToxReceiverStream toxreceiverstream(std::cin, std::cout, std::cerr);
-			toxclient = new ToxClient(config.file_name, config.nick_name, config.status_message, &toxreceiverstream);
+			toxclient = new ToxClient(config.file_name, config.nick_name, config.status_message);
+			toxclient->setReceiver(&toxreceiverstream);
 			
 			toxclient->clearFriends();
 			for (std::vector<std::string>::const_iterator it(config.ids_to.begin()); it != config.ids_to.end(); ++it)

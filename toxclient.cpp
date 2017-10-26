@@ -6,15 +6,18 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
-
+#include <stdlib.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <stdint.h>
-#include <stdlib.h>
 #include <string.h>
 
 #include <sodium/utils.h>
 #include <tox/tox.h>
+
+#ifdef __ANDROID__
+#include <android/log.h>
+#endif
 
 #ifdef _WIN32
 
@@ -156,6 +159,8 @@ void write_tox
 	const std::string &fn
 )
 {
+    if (!tox)
+        return;
 	size_t size = tox_get_savedata_size(tox);
 	char *savedata = (char *) malloc(size);
 	tox_get_savedata(tox, (uint8_t *) savedata);
@@ -250,7 +255,7 @@ void self_connection_status_cb
 }
 
 ToxClient::ToxClient()
-	: stopped(false), connectionStatus(TOX_CONNECTION_NONE), fileName(""), toxReceiver(NULL)
+	: stopped(false), connectionStatus(TOX_CONNECTION_NONE), fileName(""), toxReceiver(NULL), own_receiver(false)
 {
 	tox = tox_new(NULL, NULL);
 }
@@ -259,10 +264,9 @@ ToxClient::ToxClient
 (
 	const std::string &filename,
 	const std::string &nick,
-	const std::string &status,
-	ToxReceiver *toxreceiver
+	const std::string &status
 )
-	: stopped(false), connectionStatus(TOX_CONNECTION_NONE), fileName(filename), toxReceiver(toxreceiver)
+	: stopped(false), connectionStatus(TOX_CONNECTION_NONE), fileName(filename), toxReceiver(NULL), own_receiver(false)
 {
 	// Tox_Options *options = tox_options_new(NULL);
 	if (!read_tox(&tox, filename))
@@ -281,6 +285,28 @@ ToxClient::ToxClient
 	
 	addToList();
 }
+
+void ToxClient::setReceiver
+(
+    ToxReceiver *value
+)
+{
+    toxReceiver = value;
+    own_receiver = false;
+}
+
+#ifdef __ANDROID__
+void ToxClient::setReceiverJava
+(
+        JNIEnv *env,
+        jobject obj
+)
+{
+    __android_log_write(ANDROID_LOG_INFO, "ToxClient set receiver", " native");
+    toxReceiver = new ToxReceiverJava(env, obj);
+    own_receiver = true;
+}
+#endif
 
 int ToxClient::run()
 {
@@ -328,6 +354,11 @@ ToxClient::~ToxClient()
 	write_tox(tox, fileName);
 	rmFromList();
 	tox_kill(tox);
+    if (toxReceiver) {
+        if (own_receiver) {
+            delete toxReceiver;
+        }
+    }
 }
 
 Tox *ToxClient::getTox() const
@@ -457,13 +488,13 @@ uint32_t ToxClient::addFriend
 	// tox_friend_add(tox, (const uint8_t *) tox_id_hex.c_str(), (const uint8_t *) tox_id_hex.c_str(), tox_id_hex.length(), NULL);
 	TOX_ERR_FRIEND_ADD e;
 	uint32_t r = tox_friend_by_public_key(tox, (const uint8_t *) toxid.c_str(), NULL);
-	if (r == 4294967295)
+	if (r == (uint32_t) -1)     // 4294967295
 	{
 		r = tox_friend_add_norequest(tox, (const uint8_t *) toxid.c_str(), &e);
-		if (r == 4294967295)
+		if (r == (uint32_t) -1) // 4294967295
 			std::cerr << "Error " << e << std::endl;
 	}
-	if (r != 4294967295)
+	if (r != (uint32_t) -1)     // 4294967295
 		friends.push_back(r);
 	return r;
 }
