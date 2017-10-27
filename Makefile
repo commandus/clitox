@@ -116,7 +116,7 @@ am_clitox_OBJECTS = clitox-clitox-config.$(OBJEXT) \
 	clitox-clitox.$(OBJEXT) clitox-toxclient.$(OBJEXT) \
 	clitox-clientlist.$(OBJEXT) clitox-toxreceiverstream.$(OBJEXT) \
 	clitox-toxmessage.$(OBJEXT) clitox-toxreceiverjava.$(OBJEXT) \
-	$(am__objects_1)
+	clitox-toxnodejson.$(OBJEXT) $(am__objects_1)
 nodist_clitox_OBJECTS =
 clitox_OBJECTS = $(am_clitox_OBJECTS) $(nodist_clitox_OBJECTS)
 am__DEPENDENCIES_1 =
@@ -411,7 +411,15 @@ BUILT_SOURCES =
 CLEANFILES = 
 nobase_dist_include_HEADERS = \
 	clitox.h clitox-config.h toxclient.h clientlist.h toxreceiver.h toxreceiverstream.h toxmessage.h \
-	toxreceiverjava.h
+	toxreceiverjava.h \
+	rapidjson/allocators.h           rapidjson/encodings.h        rapidjson/fwd.h             rapidjson/memorystream.h    rapidjson/prettywriter.h  rapidjson/schema.h        rapidjson/writer.h \
+	rapidjson/document.h             rapidjson/filereadstream.h   rapidjson/istreamwrapper.h  rapidjson/ostreamwrapper.h  rapidjson/rapidjson.h     rapidjson/stream.h \
+	rapidjson/encodedstream.h        rapidjson/filewritestream.h  rapidjson/memorybuffer.h    rapidjson/pointer.h         rapidjson/reader.h        rapidjson/stringbuffer.h \
+	rapidjson/error/en.h             rapidjson/error/error.h \
+	rapidjson/internal/biginteger.h  rapidjson/internal/dtoa.h rapidjson/internal/itoa.h rapidjson/internal/pow10.h rapidjson/internal/stack.h rapidjson/internal/strtod.h \
+	rapidjson/internal/diyfp.h       rapidjson/internal/ieee754.h rapidjson/internal/meta.h rapidjson/internal/regex.h rapidjson/internal/strfunc.h rapidjson/internal/swap.h \
+	rapidjson/msinttypes/inttypes.h  rapidjson/msinttypes/stdint.h \
+	toxnodejson.h
 
 common_src = 
 commonlibs = -L/usr/local/lib/ -largtable2
@@ -422,6 +430,7 @@ commonlibs = -L/usr/local/lib/ -largtable2
 clitox_SOURCES = \
 	clitox-config.cpp  clitox.cpp toxclient.cpp clientlist.cpp toxreceiverstream.cpp toxmessage.cpp \
 	toxreceiverjava.cpp \
+	toxnodejson.cpp \
 	$(common_src)
 
 clitox_LDADD = $(commonlibs) -lsodium -ltoxcore
@@ -553,6 +562,7 @@ include ./$(DEPDIR)/clitox-clitox-config.Po
 include ./$(DEPDIR)/clitox-clitox.Po
 include ./$(DEPDIR)/clitox-toxclient.Po
 include ./$(DEPDIR)/clitox-toxmessage.Po
+include ./$(DEPDIR)/clitox-toxnodejson.Po
 include ./$(DEPDIR)/clitox-toxreceiverjava.Po
 include ./$(DEPDIR)/clitox-toxreceiverstream.Po
 
@@ -677,6 +687,20 @@ clitox-toxreceiverjava.obj: toxreceiverjava.cpp
 #	$(AM_V_CXX)source='toxreceiverjava.cpp' object='clitox-toxreceiverjava.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o clitox-toxreceiverjava.obj `if test -f 'toxreceiverjava.cpp'; then $(CYGPATH_W) 'toxreceiverjava.cpp'; else $(CYGPATH_W) '$(srcdir)/toxreceiverjava.cpp'; fi`
+
+clitox-toxnodejson.o: toxnodejson.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT clitox-toxnodejson.o -MD -MP -MF $(DEPDIR)/clitox-toxnodejson.Tpo -c -o clitox-toxnodejson.o `test -f 'toxnodejson.cpp' || echo '$(srcdir)/'`toxnodejson.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/clitox-toxnodejson.Tpo $(DEPDIR)/clitox-toxnodejson.Po
+#	$(AM_V_CXX)source='toxnodejson.cpp' object='clitox-toxnodejson.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o clitox-toxnodejson.o `test -f 'toxnodejson.cpp' || echo '$(srcdir)/'`toxnodejson.cpp
+
+clitox-toxnodejson.obj: toxnodejson.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT clitox-toxnodejson.obj -MD -MP -MF $(DEPDIR)/clitox-toxnodejson.Tpo -c -o clitox-toxnodejson.obj `if test -f 'toxnodejson.cpp'; then $(CYGPATH_W) 'toxnodejson.cpp'; else $(CYGPATH_W) '$(srcdir)/toxnodejson.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/clitox-toxnodejson.Tpo $(DEPDIR)/clitox-toxnodejson.Po
+#	$(AM_V_CXX)source='toxnodejson.cpp' object='clitox-toxnodejson.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(clitox_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o clitox-toxnodejson.obj `if test -f 'toxnodejson.cpp'; then $(CYGPATH_W) 'toxnodejson.cpp'; else $(CYGPATH_W) '$(srcdir)/toxnodejson.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
