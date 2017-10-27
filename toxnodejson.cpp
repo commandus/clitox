@@ -105,4 +105,5 @@ int load_json_nodes
 		}
 		parse(retval, json.c_str());
 	}
+	return 0;
 }

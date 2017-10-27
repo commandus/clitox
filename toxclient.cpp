@@ -169,7 +169,7 @@ bool read_tox
 	} 
 
 	*retval = tox_new(&options, NULL);
-
+	return r;
 }
 
 void write_tox
