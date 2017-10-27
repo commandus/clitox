@@ -72,6 +72,29 @@ wget -o nodes.tox.chat.json https://nodes.tox.chat/json
 ./clitox -b nodes.tox.chat.json 4542AF0241812A5B948B7F387D965D8E689AA5CED5E8B32E758E6264BE1D5E27F8C7B2E25C56 --local
 ```
 
+#### Bootstrap node
+
+```
+cd c-toxcore
+./configure --enable-dht-bootstrap
+```
+or
+```
+cd c-toxcore
+./configure --enable-daemon --enable-dht-bootstrap
+```
+
+then
+
+```
+make
+cd build/
+./DHT_bootstrap 
+Initialization: Success
+Keys saved successfully.
+Public key: 12FE34B0F82D92016C34CBF7D80CBA3627AC0E7FD07CFBADC22BCA1EDD9CC75B
+Port: 33445
+```
 
 ## Build
 
