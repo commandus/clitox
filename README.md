@@ -53,6 +53,26 @@ clitox -i
 DE93C25176BBB999F6A18F44C163893561BF330C3CAC53FA07DF51A3F9C06E192EB9141124BB
 ```
 
+### Options
+
+
+#### Bootstrapping
+
+If no bootstrapping nodes is set, hardcoded short list is used.
+
+Get from Tox Bootstrap Nodes Status list [https://nodes.tox.chat/](https://nodes.tox.chat/json):
+```
+./clitox -b https://nodes.tox.chat/json 4542AF0241812A5B948B7F387D965D8E689AA5CED5E8B32E758E6264BE1D5E27F8C7B2E25C56 --local
+```
+
+or you can save nodes list in file and use downloaded file:
+
+```
+wget -o nodes.tox.chat.json https://nodes.tox.chat/json
+./clitox -b nodes.tox.chat.json 4542AF0241812A5B948B7F387D965D8E689AA5CED5E8B32E758E6264BE1D5E27F8C7B2E25C56 --local
+```
+
+
 ## Build
 
 ```

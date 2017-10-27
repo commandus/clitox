@@ -1,4 +1,5 @@
 #include <fstream>
+#include <curl/curl.h>
 #include "toxnodejson.h"
 #include "toxclient.h"
 
@@ -7,9 +8,11 @@ using namespace rapidjson;
 int parse
 (
 	std::vector<struct DHT_node> &retval,
-	const char* json
+	const char *json
 )
 {
+	if (!json)
+		return 1;
 	Document d;
 	d.Parse(json);
 	Value &nodes = d["nodes"];
@@ -44,10 +47,47 @@ static std::string file2string(const char *filename)
 	return file2string(t);
 }
 
-static std::string file2string(const std::string &filename)
+static std::string file2string
+(
+	const std::string &filename
+)
 {
 	return file2string(filename.c_str());
 }
+
+
+/**
+  * @brief CURL write callback
+  */
+static size_t write_string(void *contents, size_t size, size_t nmemb, void *userp)
+{
+	((std::string*)userp)->append((char*)contents, size * nmemb);
+    return size * nmemb;
+}
+
+static std::string url2string
+(
+	const std::string &filename
+)
+{
+	std::string retval;
+	CURL *curl;
+	CURLcode res;
+
+	curl_global_init(CURL_GLOBAL_DEFAULT);
+	curl = curl_easy_init();
+	if (!curl) 
+		return "";
+	curl_easy_setopt(curl, CURLOPT_URL, filename.c_str());
+	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &write_string);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &retval);
+	curl_easy_perform(curl);
+	curl_easy_cleanup(curl);
+	return retval;
+}
+ 
 
 int load_json_nodes
 (
@@ -61,6 +101,7 @@ int load_json_nodes
 		if (json.empty())
 		{
 			// Try load from Internet
+			json = url2string(*it);
 		}
 		parse(retval, json.c_str());
 	}
