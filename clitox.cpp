@@ -14,6 +14,7 @@
 
 #include "toxclient.h"
 #include "toxreceiverstream.h"
+#include "toxnodejson.h"
 
 ToxClient *toxclient  = NULL;
 bool stopRequest = false;
@@ -92,7 +93,15 @@ int main(int argc, char** argv)
 			std::cerr << "Tox ID: " << r << std::endl;
 			
 			ToxReceiverStream toxreceiverstream(std::cin, std::cout, std::cerr);
-			toxclient = new ToxClient(config.file_name, config.nick_name, config.status_message);
+			struct Tox_Options toxoptions;
+			config.getToxOptions(&toxoptions);
+			
+			std::vector<struct DHT_node> nodes;
+			load_json_nodes(nodes, config.nodes_json);
+			if (nodes.empty())
+				getDefaultNodes(nodes);
+
+			toxclient = new ToxClient(&toxoptions, nodes, config.file_name, config.nick_name, config.status_message);
 			toxclient->setReceiver(&toxreceiverstream);
 			
 			toxclient->clearFriends();

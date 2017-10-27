@@ -18,10 +18,22 @@
 #include "toxreceiverjava.h"
 #endif
 
+typedef struct DHT_node 
+{
+	std::string ip;
+	uint16_t port;
+	std::string key_hex;	//< [TOX_PUBLIC_KEY_SIZE * 2 + 1]
+} DHT_node;
+
 void write_tox
 (
 	const Tox *tox,
 	const std::string &fn
+);
+
+void getDefaultNodes
+(
+	std::vector<struct DHT_node> &nodes
 );
 
 class ToxClient
@@ -43,6 +55,8 @@ public:
 
 	ToxClient
 	(
+		struct Tox_Options *toxoptions,
+		const std::vector<struct DHT_node> &nodes,
 		const std::string &filename,
 		const std::string &nick_name,
 		const std::string &status

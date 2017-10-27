@@ -39,13 +39,6 @@ void usleep(__int64 usec)
 #include <unistd.h>
 #endif
 
-typedef struct DHT_node 
-{
-	const char *ip;
-	uint16_t port;
-	const char key_hex[TOX_PUBLIC_KEY_SIZE*2 + 1];
-} DHT_node;
-
 // TODO load bootstrap and parse json
 /*
  * https://nodes.tox.chat/json
@@ -68,7 +61,7 @@ typedef struct DHT_node
 	},...
 	*/
 
-static const DHT_node nodes[] =
+static const DHT_node default_nodes[] =
 	{
 	{"178.62.250.138",             33445, "788236D34978D1D5BD822F0A5BEBD2C53C64CC31CD3149350EE27D4D9A2F9B6B"},
 	{"2a03:b0c0:2:d0::16:1",       33445, "788236D34978D1D5BD822F0A5BEBD2C53C64CC31CD3149350EE27D4D9A2F9B6B"},
@@ -79,6 +72,18 @@ static const DHT_node nodes[] =
 	{"2400:6180:0:d0::17a:a001",   33445, "B05C8869DBB4EDDD308F43C1A974A20A725A36EACCA123862FDE9945BF9D3E09"},
 	{"biribiri.org",               33445, "F404ABAA1C99A9D37D61AB54898F56793E1DEF8BD46B1038B9D822E8460FAB67"}
 };
+
+
+void getDefaultNodes
+(
+	std::vector<struct DHT_node> &nodes
+)
+{
+	for (size_t i = 0; i < sizeof(default_nodes)/sizeof(DHT_node); i ++) 
+	{
+		nodes.push_back(default_nodes[i]);
+	}
+}
 
 static std::string hex_to_bin
 (
@@ -108,23 +113,41 @@ static std::string str_addr_hex
 
 void bootstrap
 (
-	Tox *tox
+	Tox *tox,
+	const std::vector<struct DHT_node> &nodes
 )
 {
-	for (size_t i = 0; i < sizeof(nodes)/sizeof(DHT_node); i ++) 
+	for (std::vector<struct DHT_node>::const_iterator it(nodes.begin()); it != nodes.end(); ++it) 
 	{
-		tox_bootstrap(tox, nodes[i].ip, nodes[i].port, (unsigned char *) hex_to_bin(nodes[i].key_hex).c_str(), NULL);
+		tox_bootstrap(tox, it->ip.c_str(), it->port, (unsigned char *) hex_to_bin(it->key_hex.c_str()).c_str(), NULL);
 	}
 }
  
 bool read_tox
 (
 	Tox **retval,
+	struct Tox_Options *toxoptions,
 	const std::string &fn
 )
 {
+	bool r = false;
 	struct Tox_Options options;
 	tox_options_default(&options);
+	if (toxoptions)
+	{
+		// override from new settings
+	    options.ipv6_enabled = toxoptions->ipv6_enabled;
+		options.udp_enabled = toxoptions->udp_enabled;
+		options.local_discovery_enabled = toxoptions->local_discovery_enabled;
+		options.proxy_type = toxoptions->proxy_type;
+		options.proxy_host = toxoptions->proxy_host;
+		options.proxy_port = toxoptions->proxy_port;
+		options.start_port = toxoptions->start_port;
+		options.end_port = toxoptions->end_port;
+		options.tcp_port = toxoptions->tcp_port;
+		options.hole_punching_enabled = toxoptions->hole_punching_enabled;
+	}
+	
 	FILE *f = fopen(fn.c_str(), "rb");
 	if (f) 
 	{
@@ -134,23 +157,19 @@ bool read_tox
 
 		char *savedata = (char *) malloc(fsize);
 
-		fread(savedata, fsize, 1, f);
+		size_t read = fread(savedata, fsize, 1, f);
 		fclose(f);
 
 		options.savedata_type = TOX_SAVEDATA_TYPE_TOX_SAVE;
 		options.savedata_data = (uint8_t *) savedata;
 		options.savedata_length = fsize;
 
-		*retval = tox_new(&options, NULL);
 		free(savedata);
-		
-		return true;
+		r = read == fsize;
 	} 
-	else 
-	{
-		*retval = tox_new(&options, NULL);
-		return false;
-	}
+
+	*retval = tox_new(&options, NULL);
+
 }
 
 void write_tox
@@ -197,7 +216,7 @@ std::string ToxClient::getIdHex
 )
 {
 	Tox *tox;
-	if (!read_tox(&tox, fn))
+	if (!read_tox(&tox, NULL, fn))
 		return "";
 	std::string r = getIdHex(tox);
 	tox_kill(tox);
@@ -262,6 +281,8 @@ ToxClient::ToxClient()
 
 ToxClient::ToxClient
 (
+	struct Tox_Options *toxoptions,
+	const std::vector<struct DHT_node> &nodes,
 	const std::string &filename,
 	const std::string &nick,
 	const std::string &status
@@ -269,15 +290,16 @@ ToxClient::ToxClient
 	: stopped(false), connectionStatus(TOX_CONNECTION_NONE), fileName(filename), toxReceiver(NULL), own_receiver(false)
 {
 	// Tox_Options *options = tox_options_new(NULL);
-	if (!read_tox(&tox, filename))
+	if (!read_tox(&tox, toxoptions, filename))
 	{
+		// create a new identifier and save to file
 		newId();
 		write_tox(tox, filename);
 	}
 	setNick(nick);
 	setStatus(status);
 
-	bootstrap(tox);
+	bootstrap(tox, nodes);
 
 	tox_callback_friend_request(tox, friend_request_cb);
 	tox_callback_friend_message(tox, friend_message_cb);
