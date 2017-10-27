@@ -1,0 +1,9 @@
+{
+	"nodes":[
+		{
+			"ipv4":"127.0.0.1",
+			"port":33445,
+			"public_key":"12FE34B0F82D92016C34CBF7D80CBA3627AC0E7FD07CFBADC22BCA1EDD9CC75B"
+		}
+	]
+}
