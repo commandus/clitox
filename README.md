@@ -68,7 +68,7 @@ Get from Tox Bootstrap Nodes Status list [https://nodes.tox.chat/](https://nodes
 or you can save nodes list in file and use downloaded file:
 
 ```
-wget -o nodes.tox.chat.json https://nodes.tox.chat/json
+wget -O nodes.tox.chat.json https://nodes.tox.chat/json
 ./clitox -b nodes.tox.chat.json 4542AF0241812A5B948B7F387D965D8E689AA5CED5E8B32E758E6264BE1D5E27F8C7B2E25C56 --local
 ```
 

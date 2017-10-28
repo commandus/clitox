@@ -165,7 +165,7 @@ bool read_tox
 		options.savedata_length = fsize;
 
 		free(savedata);
-		r = read == fsize;
+		r = read == 1;
 	} 
 
 	*retval = tox_new(&options, NULL);
