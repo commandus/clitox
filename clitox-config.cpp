@@ -40,9 +40,9 @@ int ClitoxConfig::parseCmd
 	struct arg_str *a_ids_to = arg_strn(NULL, NULL, "<Tox ID>", 0, 100, "Send to clients by TOX identifier");
 	struct arg_str *a_nodes_json = arg_strn("b", "boot", "<file name>", 0, 100, "Bootstrap nodes file");
 	// Tox options
-	struct arg_lit *a_ipv6_enabled = arg_lit0(NULL, "ipv6", "Enables IPv4 & IPv6 both");
-    struct arg_lit *a_udp_enabled = arg_lit0(NULL, "udp", "Enables UDP.");
-    struct arg_lit *a_local_discovery_enabled = arg_lit0(NULL, "local", "Enables local discovery.");
+	struct arg_lit *a_ipv6_disabled = arg_lit0(NULL, "no-ipv6", "Disable IPv6");
+    struct arg_lit *a_udp_disabled = arg_lit0(NULL, "no-udp", "Disable UDP");
+    struct arg_lit *a_local_discovery_disabled = arg_lit0(NULL, "no-local", "Disable local discovery.");
 	struct arg_str *a_proxy_type = arg_str0(NULL, "proxy", "none|http|socks5", "Set proxy type. Default none.");
 	struct arg_str *a_proxy_host = arg_str0(NULL, "proxy_host", "IP address or name", "Proxy host address or name.");
 	struct arg_int *a_proxy_port = arg_int0(NULL, "proxy_port", "Port number", "Proxy host port.");
@@ -58,7 +58,7 @@ int ClitoxConfig::parseCmd
 		a_print_tox_id, a_file_name, a_nick_name, a_ids_to, a_status_message,
 		a_nodes_json,
 		
-		a_ipv6_enabled, a_udp_enabled, a_local_discovery_enabled, a_proxy_type,
+		a_ipv6_disabled, a_udp_disabled, a_local_discovery_disabled, a_proxy_type,
 		a_proxy_host, a_proxy_port, a_start_port, a_end_port, a_tcp_port,
 		hole_punching_disabled,
 		
@@ -106,9 +106,9 @@ int ClitoxConfig::parseCmd
 		ids_to.push_back(a_ids_to->sval[i]);
 	}
 
-	toxoptions.ipv6_enabled = a_ipv6_enabled->count > 0;
-	toxoptions.udp_enabled = a_udp_enabled->count > 0;
-	toxoptions.local_discovery_enabled = a_local_discovery_enabled->count > 0;
+	toxoptions.ipv6_enabled = a_ipv6_disabled->count == 0;
+	toxoptions.udp_enabled = a_udp_disabled->count == 0;
+	toxoptions.local_discovery_enabled = a_local_discovery_disabled->count == 0;
 	if (a_proxy_type->count)
 	{
 		std::string pt(*a_proxy_type->sval);

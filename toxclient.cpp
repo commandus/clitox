@@ -146,6 +146,7 @@ bool read_tox
 		options.end_port = toxoptions->end_port;
 		options.tcp_port = toxoptions->tcp_port;
 		options.hole_punching_enabled = toxoptions->hole_punching_enabled;
+
 	}
 	
 	FILE *f = fopen(fn.c_str(), "rb");
