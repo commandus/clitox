@@ -3,15 +3,13 @@
  */
 
 #include <thread>
-
-#include <argtable2.h>
 #include <string>
 #include <cstring>
 #include <iostream>
 #include <signal.h>
+#include <argtable2.h>
 
 #include "clitox.h"
-
 #include "toxclient.h"
 #include "toxreceiverstream.h"
 #include "toxnodejson.h"
@@ -82,7 +80,6 @@ int main(int argc, char** argv)
 	if (nodes.empty())
 		getDefaultNodes(nodes);
 
-	
 	toxclient = new ToxClient(&toxoptions, nodes, config.file_name, config.nick_name, config.status_message);
 
 	std::string r = toxclient->getIdHex();
