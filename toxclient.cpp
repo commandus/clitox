@@ -139,14 +139,14 @@ TOX_ERR_NEW readTox
 	
 	FILE *f = fopen(fn.c_str(), "rb");
 	size_t read = 0;
-	u_int8_t *savedata = NULL;
+	uint8_t *savedata = NULL;
 	if (f) 
 	{
 		fseek(f, 0, SEEK_END);
 		long fsize = ftell(f);
 		fseek(f, 0, SEEK_SET);
 
-		savedata = (u_int8_t*) malloc(fsize);
+		savedata = (uint8_t*) malloc(fsize);
 
 		read = fread(savedata, fsize, 1, f);
 		fclose(f);
