@@ -39,28 +39,6 @@ void usleep(__int64 usec)
 #include <unistd.h>
 #endif
 
-// TODO load bootstrap and parse json
-/*
- * https://nodes.tox.chat/json
- * {
-	"last_scan": 1499754490,
-	"last_refresh": 1499754502,
-	"nodes": [{
-		"ipv4": "biribiri.org",
-		"ipv6": "-",
-		"port": 33445,
-		"tcp_ports": [3389, 33445],
-		"public_key": "F404ABAA1C99A9D37D61AB54898F56793E1DEF8BD46B1038B9D822E8460FAB67",
-		"maintainer": "nurupo",
-		"location": "US",
-		"status_udp": true,
-		"status_tcp": true,
-		"version": "2016010100",
-		"motd": "Welcome, stranger #5866. I'm up for 4d 02h 19m 35s, running since Jul 07 04:08:35 UTC. If I get outdated, please ping my maintainer at nurupo.contributions@gmail.com",
-		"last_ping": 1499754490
-	},...
-	*/
-
 static const DHT_node default_nodes[] =
 	{
 	{"178.62.250.138",             33445, "788236D34978D1D5BD822F0A5BEBD2C53C64CC31CD3149350EE27D4D9A2F9B6B"},
@@ -72,7 +50,6 @@ static const DHT_node default_nodes[] =
 	{"2400:6180:0:d0::17a:a001",   33445, "B05C8869DBB4EDDD308F43C1A974A20A725A36EACCA123862FDE9945BF9D3E09"},
 	{"biribiri.org",               33445, "F404ABAA1C99A9D37D61AB54898F56793E1DEF8BD46B1038B9D822E8460FAB67"}
 };
-
 
 void getDefaultNodes
 (
@@ -104,7 +81,7 @@ static std::string str_addr_hex
 {
 	char tox_id_hex[TOX_ADDRESS_SIZE * 2 + 1];
 	sodium_bin2hex(tox_id_hex, sizeof(tox_id_hex), toxId, TOX_ADDRESS_SIZE);
-	for (size_t i = 0; i < TOX_ADDRESS_SIZE * 2; i ++) 
+	for (size_t i = 0; i < TOX_ADDRESS_SIZE * 2; i++) 
 	{
 		tox_id_hex[i] = toupper(tox_id_hex[i]);
 	}
@@ -122,58 +99,73 @@ void bootstrap
 		tox_bootstrap(tox, it->ip.c_str(), it->port, (unsigned char *) hex_to_bin(it->key_hex.c_str()).c_str(), NULL);
 	}
 }
- 
-bool read_tox
+
+void copyOptions
+(
+	struct Tox_Options *options,
+	struct Tox_Options *src
+)
+{
+	if (options)
+	{
+		tox_options_default(options);
+		if (src)
+		{
+			// override from new settings
+			options->ipv6_enabled = src->ipv6_enabled;
+			options->udp_enabled = src->udp_enabled;
+			options->local_discovery_enabled = src->local_discovery_enabled;
+			options->proxy_type = src->proxy_type;
+			options->proxy_host = src->proxy_host;
+			options->proxy_port = src->proxy_port;
+			options->start_port = src->start_port;
+			options->end_port = src->end_port;
+			options->tcp_port = src->tcp_port;
+			options->hole_punching_enabled = src->hole_punching_enabled;
+		}
+	}
+}
+
+TOX_ERR_NEW readTox
 (
 	Tox **retval,
 	struct Tox_Options *toxoptions,
 	const std::string &fn
 )
 {
-	bool r = false;
+	enum TOX_ERR_NEW r = TOX_ERR_NEW_LOAD_BAD_FORMAT;
 	struct Tox_Options options;
-	tox_options_default(&options);
-	if (toxoptions)
-	{
-		// override from new settings
-	    options.ipv6_enabled = toxoptions->ipv6_enabled;
-		options.udp_enabled = toxoptions->udp_enabled;
-		options.local_discovery_enabled = toxoptions->local_discovery_enabled;
-		options.proxy_type = toxoptions->proxy_type;
-		options.proxy_host = toxoptions->proxy_host;
-		options.proxy_port = toxoptions->proxy_port;
-		options.start_port = toxoptions->start_port;
-		options.end_port = toxoptions->end_port;
-		options.tcp_port = toxoptions->tcp_port;
-		options.hole_punching_enabled = toxoptions->hole_punching_enabled;
-
-	}
+	copyOptions(&options, toxoptions);
 	
 	FILE *f = fopen(fn.c_str(), "rb");
+	size_t read = 0;
+	u_int8_t *savedata = NULL;
 	if (f) 
 	{
 		fseek(f, 0, SEEK_END);
 		long fsize = ftell(f);
 		fseek(f, 0, SEEK_SET);
 
-		char *savedata = (char *) malloc(fsize);
+		savedata = (u_int8_t*) malloc(fsize);
 
-		size_t read = fread(savedata, fsize, 1, f);
+		read = fread(savedata, fsize, 1, f);
 		fclose(f);
 
 		options.savedata_type = TOX_SAVEDATA_TYPE_TOX_SAVE;
-		options.savedata_data = (uint8_t *) savedata;
+		options.savedata_data = savedata;
 		options.savedata_length = fsize;
 
-		free(savedata);
-		r = read == 1;
 	} 
-
-	*retval = tox_new(&options, NULL);
+	if (read == 1)
+		*retval = tox_new(&options, &r);
+	else
+		*retval = NULL;
+	if (savedata)
+		free(savedata);
 	return r;
 }
 
-void write_tox
+void writeTox
 (
 	const Tox *tox,
 	const std::string &fn
@@ -182,8 +174,8 @@ void write_tox
     if (!tox)
         return;
 	size_t size = tox_get_savedata_size(tox);
-	char *savedata = (char *) malloc(size);
-	tox_get_savedata(tox, (uint8_t *) savedata);
+	uint8_t *savedata = (uint8_t *) malloc(size);
+	tox_get_savedata(tox, savedata);
 
 	FILE *f = fopen(fn.c_str(), "wb");
 	if (f)
@@ -217,7 +209,7 @@ std::string ToxClient::getIdHex
 )
 {
 	Tox *tox;
-	if (!read_tox(&tox, NULL, fn))
+	if (readTox(&tox, NULL, fn) != TOX_ERR_NEW_OK)
 		return "";
 	std::string r = getIdHex(tox);
 	tox_kill(tox);
@@ -277,7 +269,7 @@ void self_connection_status_cb
 ToxClient::ToxClient()
 	: stopped(false), connectionStatus(TOX_CONNECTION_NONE), fileName(""), toxReceiver(NULL), own_receiver(false)
 {
-	tox = tox_new(NULL, NULL);
+	tox = NULL;	// tox_new(NULL, NULL)
 }
 
 ToxClient::ToxClient
@@ -291,16 +283,28 @@ ToxClient::ToxClient
 	: stopped(false), connectionStatus(TOX_CONNECTION_NONE), fileName(filename), toxReceiver(NULL), own_receiver(false)
 {
 	// Tox_Options *options = tox_options_new(NULL);
-	if (!read_tox(&tox, toxoptions, filename))
+	if (readTox(&tox, toxoptions, filename) != TOX_ERR_NEW_OK)
 	{
-		// create a new identifier and save to file
-		newId();
-		write_tox(tox, filename);
+		struct Tox_Options options;
+		copyOptions(&options, toxoptions);
+		TOX_ERR_NEW errnew;
+		tox = tox_new(&options, &errnew);
+		if (errnew == TOX_ERR_NEW_OK)
+		{
+			// save to file
+			writeTox(tox, filename);
+		}
+		else
+		{
+			std::cerr << "Error: " << errnew << std::endl;
+		}
+	
 	}
 	setNick(nick);
 	setStatus(status);
 
 	bootstrap(tox, nodes);
+	writeTox(tox, filename);
 
 	tox_callback_friend_request(tox, friend_request_cb);
 	tox_callback_friend_message(tox, friend_message_cb);
@@ -374,7 +378,7 @@ void ToxClient::stop()
 
 ToxClient::~ToxClient()
 {
-	write_tox(tox, fileName);
+	writeTox(tox, fileName);
 	rmFromList();
 	tox_kill(tox);
     if (toxReceiver) {
@@ -387,17 +391,6 @@ ToxClient::~ToxClient()
 Tox *ToxClient::getTox() const
 {
 	return tox;
-}
-
-std::string ToxClient::newId()
-{
-	uint8_t toxId[TOX_ADDRESS_SIZE];
-	tox_self_get_address(tox, toxId);
-	std::string r = str_addr_hex(toxId);
-
-	if (toxReceiver)
-		toxReceiver->onId(this, r);
-	return r;
 }
 
 void ToxClient::setNick(const std::string &nick)
@@ -450,7 +443,7 @@ void ToxClient::friend_request
 	if (toxReceiver)
 		toxReceiver->onFriendRequest(this, public_key, std::string((char *) message, length), user_data);
 	tox_friend_add_norequest(tox, public_key, NULL);
-	write_tox(tox, fileName);
+	writeTox(tox, fileName);
 }
 
 void ToxClient::sendFriend

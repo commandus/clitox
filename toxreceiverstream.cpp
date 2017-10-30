@@ -49,7 +49,6 @@ void ToxReceiverStream::onConnectionStatus
 
 void ToxReceiverStream::onMessage
 (
-	// Tox *tox,
 	ToxClient *toxclient,
 	uint32_t friend_number, 
 	const std::string &value,

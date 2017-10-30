@@ -65,26 +65,32 @@ void read_loop
 
 int main(int argc, char** argv)
 {
-    // Signal handler
-    setSignalHandler(SIGINT);
+	// Signal handler
+	setSignalHandler(SIGINT);
 
 	ClitoxConfig config(argc, argv);
 	if (config.error())
 		exit(config.error());
 
-	std::string r = ToxClient::getIdHex(config.file_name);
+	// load from command line options
+	struct Tox_Options toxoptions;
+	config.getToxOptions(&toxoptions);
+	
+	// get bootstrap
+	std::vector<struct DHT_node> nodes;
+	load_json_nodes(nodes, config.nodes_json);
+	if (nodes.empty())
+		getDefaultNodes(nodes);
+
+	
+	toxclient = new ToxClient(&toxoptions, nodes, config.file_name, config.nick_name, config.status_message);
+
+	std::string r = toxclient->getIdHex();
+
 	switch (config.cmd) 
 	{
 		case CMD_PRINT_TOX_ID:
 			{
-				if (r.empty())
-				{
-					toxclient = new ToxClient();
-					toxclient->newId();
-					write_tox(toxclient->getTox(), config.file_name);
-					delete toxclient;
-					r = ToxClient::getIdHex(config.file_name);
-				}
 				std::cout << r << std::endl;
 			}
 			break;
@@ -93,15 +99,6 @@ int main(int argc, char** argv)
 			std::cerr << "Tox ID: " << r << std::endl;
 			
 			ToxReceiverStream toxreceiverstream(std::cin, std::cout, std::cerr);
-			struct Tox_Options toxoptions;
-			config.getToxOptions(&toxoptions);
-			
-			std::vector<struct DHT_node> nodes;
-			load_json_nodes(nodes, config.nodes_json);
-			if (nodes.empty())
-				getDefaultNodes(nodes);
-
-			toxclient = new ToxClient(&toxoptions, nodes, config.file_name, config.nick_name, config.status_message);
 			toxclient->setReceiver(&toxreceiverstream);
 			
 			toxclient->clearFriends();
@@ -113,9 +110,9 @@ int main(int argc, char** argv)
 			t.detach();
 			toxclient->run();
 			
-			delete toxclient;
 		}
 	}
 
+	delete toxclient;
 	return 0;
 }

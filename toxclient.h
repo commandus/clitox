@@ -25,7 +25,7 @@ typedef struct DHT_node
 	std::string key_hex;	//< [TOX_PUBLIC_KEY_SIZE * 2 + 1]
 } DHT_node;
 
-void write_tox
+void writeTox
 (
 	const Tox *tox,
 	const std::string &fn
@@ -83,7 +83,6 @@ public:
 	static std::string getIdHex(Tox *tox);
 	static std::string getIdHex(const std::string &fn);
 
-	std::string newId();
 	void setNick(const std::string &nick);
 	void setStatus(const std::string &message);
 
