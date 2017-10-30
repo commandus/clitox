@@ -114,7 +114,7 @@ Edit local.json:
 ## Build
 
 ```
-autoreconf -fi
+./autogen.sh
 automake --add-missing
 ./configure
 make

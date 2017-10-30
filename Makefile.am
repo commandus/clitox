@@ -52,4 +52,5 @@ clitox_CPPFLAGS = $(commoncppflags)
 configdir = $(datadir)
 dist_config_DATA = \
 	README.md HISTORY \
+	autogen.sh \
 	.kdev_include_paths
