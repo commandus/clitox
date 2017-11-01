@@ -49,7 +49,6 @@ private:
 
 	void addToList();
 	void rmFromList();
-
 public:
 	ToxClient();
 
@@ -126,6 +125,11 @@ public:
 		const std::string &action
 	);
 	TOX_CONNECTION getConnectionStatus();
+
+	std::string getFriendId
+	(
+			uint32_t friend_number
+	);
 
 	std::string getFriendName
 	(

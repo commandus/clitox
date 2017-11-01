@@ -74,18 +74,35 @@ static std::string hex_to_bin
 	return r;
 }
 
+static std::string toHex
+(
+	const uint8_t *toxId,
+	size_t size
+)
+{
+	char tox_id_hex[TOX_ADDRESS_SIZE * 2 + 1];
+	sodium_bin2hex(tox_id_hex, sizeof(tox_id_hex), toxId, size);
+	for (size_t i = 0; i < size * 2; i++)
+	{
+		tox_id_hex[i] = toupper(tox_id_hex[i]);
+	}
+	return std::string(tox_id_hex, size * 2);
+}
+
 static std::string str_addr_hex
 (
 	const uint8_t *toxId
 )
 {
-	char tox_id_hex[TOX_ADDRESS_SIZE * 2 + 1];
-	sodium_bin2hex(tox_id_hex, sizeof(tox_id_hex), toxId, TOX_ADDRESS_SIZE);
-	for (size_t i = 0; i < TOX_ADDRESS_SIZE * 2; i++) 
-	{
-		tox_id_hex[i] = toupper(tox_id_hex[i]);
-	}
-	return std::string(tox_id_hex, TOX_ADDRESS_SIZE * 2);
+	return toHex(toxId, TOX_ADDRESS_SIZE);
+}
+
+static std::string str_key_hex
+(
+		const uint8_t *toxKey
+)
+{
+	return toHex(toxKey, TOX_PUBLIC_KEY_SIZE);
 }
 
 void bootstrap
@@ -296,7 +313,8 @@ ToxClient::ToxClient
 		}
 		else
 		{
-			std::cerr << "Error: " << errnew << std::endl;
+			// std::cerr << "Error: " << errnew << std::endl;
+			return;
 		}
 	
 	}
@@ -472,6 +490,16 @@ void ToxClient::sendFriendAction
 )
 {
 	sendFriend(friend_number, TOX_MESSAGE_TYPE_ACTION, action);
+}
+
+std::string ToxClient::getFriendId
+(
+        uint32_t friend_number
+)
+{
+    uint8_t cid[TOX_PUBLIC_KEY_SIZE * 2];
+    int size = tox_friend_get_public_key(tox, friend_number, cid, NULL);
+    return str_key_hex(cid);
 }
 
 std::string ToxClient::getFriendName
