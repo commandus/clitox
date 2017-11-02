@@ -529,12 +529,14 @@ uint32_t ToxClient::addFriend
 )
 {
 	std::string toxid = hex_to_bin(tox_id_hex);
+	std::string sinvite = "Add me to friend";
 	// tox_friend_add(tox, (const uint8_t *) tox_id_hex.c_str(), (const uint8_t *) tox_id_hex.c_str(), tox_id_hex.length(), NULL);
 	TOX_ERR_FRIEND_ADD e;
 	uint32_t r = tox_friend_by_public_key(tox, (const uint8_t *) toxid.c_str(), NULL);
 	if (r == (uint32_t) -1)     // 4294967295
 	{
-		r = tox_friend_add_norequest(tox, (const uint8_t *) toxid.c_str(), &e);
+		r = tox_friend_add(tox, (const uint8_t *)toxid.c_str(), (const uint8_t *)sinvite.c_str(), sinvite.size(), &e);
+		// r = tox_friend_add_norequest(tox, (const uint8_t *) toxid.c_str(), &e);
 		if (r == (uint32_t) -1) // 4294967295
 			std::cerr << "Error " << e << std::endl;
 	}
