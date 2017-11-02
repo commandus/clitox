@@ -17,11 +17,13 @@ class ToxReceiverJava : public ToxReceiver
 private:
     JNIEnv *jenv;
     jclass jcls;
-    jmethodID jOnId;
-    jmethodID jOnConnectionStatus;
-    jmethodID jOnMessage;
-    jmethodID jOnFriendRequest;
-    jmethodID jNextMessageTo;
+    jobject jobj;
+	jmethodID jOnId;
+	jmethodID jOnConnectionStatus;
+	jmethodID jOnMessage;
+	jmethodID jOnFriendRequest;
+	jmethodID jNextMessageTo;
+
 	std::queue<ToxMessage> messages;
 public:
 	ToxReceiverJava

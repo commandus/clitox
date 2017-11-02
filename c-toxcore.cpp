@@ -28,13 +28,31 @@ Java_com_commandus_rtox_ToxClient_createClient(
         JNIEnv *jenv,
         jobject jcaller,
         jobject jobj,
+        jobjectArray jnodes,
         jstring filename,
         jstring nick,
         jstring status
 )
 {
     struct Tox_Options *toxoptions = NULL;
+
     std::vector<struct DHT_node> nodes;
+    jsize nodesCount = jenv->GetArrayLength(jnodes);
+    jclass java_node_cls = jenv->FindClass("com/commandus/data/BootstrapNode");
+    jfieldID fidIP = jenv->GetFieldID(java_node_cls, "ip", "Ljava/lang/String;");
+    jfieldID fidPort = jenv->GetFieldID(java_node_cls, "port", "I");
+    jfieldID fidKey = jenv->GetFieldID(java_node_cls, "publicKey", "Ljava/lang/String;");
+    for (jsize i = 0; i < nodesCount; i++) {
+        jobject o = jenv->GetObjectArrayElement(jnodes, i);
+        jstring jip = (jstring) jenv->GetObjectField(o, fidIP);
+        jint jport = jenv->GetIntField(o, fidPort);
+        jstring jpublickey = (jstring) jenv->GetObjectField(o, fidKey);
+        struct DHT_node n;
+        n.ip = jstring2string(jenv, jip);
+        n.port = jport;
+        n.key_hex = jstring2string(jenv, jpublickey);
+        nodes.push_back(n);
+    }
 
     std::string sfilename = jstring2string(jenv, filename);
     std::string snick = jstring2string(jenv, nick);

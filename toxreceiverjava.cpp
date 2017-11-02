@@ -3,25 +3,31 @@
 
 #include "sodium.h"
 #include "sodium/utils.h"
+#include <android/log.h>
 
 ToxReceiverJava::ToxReceiverJava
 (
 		JNIEnv *env,
         jobject obj
 )
-    :   jenv(env)
 {
-    jcls = env->GetObjectClass(obj);
-    jOnId = env->GetMethodID(jcls, "onId", "(Ljava/lang/String;)V");
-    jOnConnectionStatus = env->GetMethodID(jcls, "onConnectionStatus", "(ILjava/lang/String;)V");
-    jOnMessage = env->GetMethodID(jcls, "onMessage", "(ILjava/lang/String;Ljava/lang/String;)V");
-    jOnFriendRequest = env->GetMethodID(jcls, "onFriendRequest", "(Ljava/lang/String;Ljava/lang/String;)V");
-    jNextMessageTo = env->GetMethodID(jcls, "nextMessageTo", "(IILjava/lang/String;)V");
+    __android_log_write(ANDROID_LOG_INFO, "ToxReceiverJava", "Init");
+    jenv = env;
+    jobj = reinterpret_cast<jobject> (jenv->NewGlobalRef(obj));
+    jcls = reinterpret_cast<jclass>(jenv->NewGlobalRef(jenv->GetObjectClass(jobj)));
+
+    jOnId = jenv->GetMethodID(jcls, "onId", "(Ljava/lang/String;)V");
+    jOnConnectionStatus = jenv->GetMethodID(jcls, "onConnectionStatus", "(ILjava/lang/String;)V");
+    jOnMessage = jenv->GetMethodID(jcls, "onMessage", "(ILjava/lang/String;Ljava/lang/String;)V");
+    jOnFriendRequest = jenv->GetMethodID(jcls, "onFriendRequest", "(Ljava/lang/String;Ljava/lang/String;)V");
+    jNextMessageTo = jenv->GetMethodID(jcls, "nextMessageTo", "(IILjava/lang/String;)V");
 }
 
 ToxReceiverJava::~ToxReceiverJava()
 {
-
+    jenv->DeleteGlobalRef(jobj);
+    jenv->DeleteGlobalRef(jcls);
+    __android_log_write(ANDROID_LOG_INFO, "ToxReceiverJava", "Done");
 }
 
 void ToxReceiverJava::onId
@@ -31,9 +37,10 @@ void ToxReceiverJava::onId
 	const std::string &valuehex
 )
 {
+	// jmethodID jOnId = jenv->GetMethodID(jcls, "onId", "(Ljava/lang/String;)V");
     if (jOnId) {
         jstring jstr = jenv->NewStringUTF(valuehex.c_str());
-        jenv->CallVoidMethod(jcls, jOnId, jstr);
+        jenv->CallVoidMethod(jobj, jOnId, jstr);
     }
 }
 
@@ -56,9 +63,11 @@ void ToxReceiverJava::onConnectionStatus
 		default:
 			s = "offline";
 	}
+    // jmethodID jOnConnectionStatus = jenv->GetMethodID(jcls, "onConnectionStatus", "(ILjava/lang/String;)V");
     if (jOnConnectionStatus) {
         jstring jstr = jenv->NewStringUTF(s.c_str());
-        jenv->CallVoidMethod(jcls, jOnConnectionStatus, (int) value, jstr);
+		jint jvalue = value;
+        jenv->CallVoidMethod(jobj, jOnConnectionStatus, jvalue, jstr);
     }
 }
 
@@ -70,10 +79,11 @@ void ToxReceiverJava::onMessage
 	void *user_data
 )
 {
-    if (jOnConnectionStatus) {
+	// jmethodID jOnMessage = jenv->GetMethodID(jcls, "onMessage", "(ILjava/lang/String;Ljava/lang/String;)V");
+    if (jOnMessage) {
         jstring jFriendName = jenv->NewStringUTF(toxclient->getFriendName(friend_number).c_str());
         jstring jValue = jenv->NewStringUTF(value.c_str());
-        jenv->CallVoidMethod(jcls, jOnMessage, friend_number, jFriendName, jValue);
+        jenv->CallVoidMethod(jobj, jOnMessage, friend_number, jFriendName, jValue);
     }
 }
 
@@ -85,7 +95,8 @@ bool ToxReceiverJava::onFriendRequest
 	void *user_data
 )
 {
-    if (jOnConnectionStatus) {
+    // jmethodID jOnFriendRequest = jenv->GetMethodID(jcls, "onFriendRequest", "(Ljava/lang/String;Ljava/lang/String;)V");
+    if (jOnFriendRequest) {
         jstring jFriendName = jenv->NewStringUTF(name.c_str());
         char tox_id_hex[TOX_ADDRESS_SIZE * 2 + 1];
         tox_id_hex[TOX_ADDRESS_SIZE * 2] = '\0';
@@ -95,7 +106,7 @@ bool ToxReceiverJava::onFriendRequest
             tox_id_hex[i] = toupper(tox_id_hex[i]);
         }
         jstring jKeyHex = jenv->NewStringUTF(tox_id_hex);
-        jenv->CallVoidMethod(jcls, jOnId, jKeyHex, jFriendName);
+        jenv->CallVoidMethod(jobj, jOnFriendRequest, jKeyHex, jFriendName);
     }
 	return true;
 }
