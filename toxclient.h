@@ -146,6 +146,8 @@ public:
 		const std::string &tox_id_hex
 	);
 
+	int getFriendSize();
+
 	int run();
 	
 	void stop();

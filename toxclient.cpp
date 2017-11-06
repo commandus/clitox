@@ -351,7 +351,7 @@ void ToxClient::setReceiverJava
 )
 {
     __android_log_write(ANDROID_LOG_INFO, "ToxClient set receiver", " native");
-    toxReceiver = new ToxReceiverJava(env, obj);
+    toxReceiver = new ToxReceiverJava(env, obj, TOX_MESSAGE_TYPE_NORMAL);
     ownReceiver = true;
 }
 #endif
@@ -546,4 +546,9 @@ uint32_t ToxClient::addFriend
 	if (r != (uint32_t) -1)     // 4294967295
 		friends.push_back(r);
 	return r;
+}
+
+int ToxClient::getFriendSize()
+{
+	return tox_self_get_friend_list_size(tox);
 }
