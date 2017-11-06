@@ -151,7 +151,6 @@
     <ClCompile Include="..\..\toxclient.cpp" />
     <ClCompile Include="..\..\toxmessage.cpp" />
     <ClCompile Include="..\..\toxnodejson.cpp" />
-    <ClCompile Include="..\..\toxreceiverjava.cpp" />
     <ClCompile Include="..\..\toxreceiverstream.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -163,7 +162,6 @@
     <ClInclude Include="..\..\toxmessage.h" />
     <ClInclude Include="..\..\toxnodejson.h" />
     <ClInclude Include="..\..\toxreceiver.h" />
-    <ClInclude Include="..\..\toxreceiverjava.h" />
     <ClInclude Include="..\..\toxreceiverstream.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
