@@ -25,11 +25,13 @@ private:
 	jmethodID jNextMessageTo;
 
 	std::queue<ToxMessage> messages;
+	TOX_MESSAGE_TYPE defaultMessageType;
 public:
 	ToxReceiverJava
 	(
         JNIEnv *env,
-        jobject obj
+        jobject obj,
+		TOX_MESSAGE_TYPE default_message_type
 	);
     virtual ~ToxReceiverJava();
 

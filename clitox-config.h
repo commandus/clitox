@@ -42,7 +42,7 @@ public:
 	std::vector<std::string> nodes_json;			///< bootstrap nodes list json file
 	bool friend_norequest;
 	std::string message_friend_request;
-
+	bool message_type_action;
 	ClitoxConfig();
 	ClitoxConfig
 	(

@@ -96,7 +96,7 @@ int main(int argc, char** argv)
 		{
 			std::cerr << "ToxID: " << r << std::endl;
 			
-			ToxReceiverStream toxreceiverstream(std::cin, std::cout, std::cerr);
+			ToxReceiverStream toxreceiverstream(std::cin, std::cout, std::cerr, config.message_type_action?TOX_MESSAGE_TYPE_ACTION: TOX_MESSAGE_TYPE_NORMAL);
 			toxclient->setReceiver(&toxreceiverstream);
 			
 			toxclient->clearFriends();

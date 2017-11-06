@@ -8,7 +8,8 @@
 ToxReceiverJava::ToxReceiverJava
 (
 		JNIEnv *env,
-        jobject obj
+        jobject obj,
+		defaultMessageType(default_message_type)
 )
 {
     __android_log_write(ANDROID_LOG_INFO, "ToxReceiverJava", "Init");
@@ -138,7 +139,7 @@ void ToxReceiverJava::readLine
 	std::string line("Test");
 	ToxMessage m;
 	m.friend_number = 0;
-	m.message_type = TOX_MESSAGE_TYPE_NORMAL;
+	m.message_type defaultMessageType;
 	m.message = line;
 	messages.push(m);
 }

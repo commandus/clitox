@@ -16,12 +16,14 @@ private:
 	std::ostream &ostream;
 	std::ostream &estream;
 	std::queue<ToxMessage> messages;
+	TOX_MESSAGE_TYPE defaultMessageType;
 public:
 	ToxReceiverStream
 	(
 		std::istream &i_stream,
 		std::ostream &o_stream,
-		std::ostream &e_stream
+		std::ostream &e_stream,
+		TOX_MESSAGE_TYPE default_message_type
 	);
     virtual ~ToxReceiverStream();
 

@@ -4,9 +4,10 @@ ToxReceiverStream::ToxReceiverStream
 (
 	std::istream &i_stream,
 	std::ostream &o_stream,
-	std::ostream &e_stream
+	std::ostream &e_stream,
+	TOX_MESSAGE_TYPE default_message_type
 )
-	: istream(i_stream), ostream(o_stream), estream(e_stream)
+	: istream(i_stream), ostream(o_stream), estream(e_stream), defaultMessageType(default_message_type)
 {
 	estream << "Connecting.. ";
 }
@@ -98,7 +99,7 @@ void ToxReceiverStream::readLine
 	std::getline(istream, line);
 	ToxMessage m;
 	m.friend_number = 0;
-	m.message_type = TOX_MESSAGE_TYPE_NORMAL;
+	m.message_type = defaultMessageType;
 	m.message = line;
 	messages.push(m);
 }
