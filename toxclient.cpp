@@ -352,7 +352,7 @@ void ToxClient::setReceiverJava
 {
     __android_log_write(ANDROID_LOG_INFO, "ToxClient set receiver", " native");
     toxReceiver = new ToxReceiverJava(env, obj);
-    own_receiver = true;
+    ownReceiver = true;
 }
 #endif
 
