@@ -41,7 +41,7 @@ int ClitoxConfig::parseCmd
 	struct arg_str *a_ids_to = arg_strn(NULL, NULL, "<Tox ID>", 0, 100, "Send to clients by TOX identifier");
 	struct arg_str *a_nodes_json = arg_strn("b", "boot", "<file name>", 0, 100, "Bootstrap nodes file");
 	struct arg_lit *a_friend_norequest = arg_lit0("Q", "norequest", "Do not request to add me to friend list");
-	struct arg_lit *a_message_type_action = arg_lit0("T", "type", "message type is action");
+	struct arg_lit *a_message_type_action = arg_lit0("x", "action", "message type is action");
 	
 	struct arg_str *a_message_friend_request = arg_str0("a", "add_message", "<text>", "friend request message. Default " DEF_MESSAGE_FRIEND_REQUEST);
 	
