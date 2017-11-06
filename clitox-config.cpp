@@ -3,10 +3,11 @@
 #include <argtable2.h>
 
 static const char* progname = "clitox";
-#define DEF_TOX_FILE_NAME	"clitox.tox"
+#define DEF_TOX_FILE_NAME			"clitox.tox"
+#define DEF_MESSAGE_FRIEND_REQUEST	"Add me"
 
 ClitoxConfig::ClitoxConfig()
-	: cmd(CMD_RW), file_name(""), nick_name(""), status_message("")
+	: cmd(CMD_RW), file_name(""), nick_name(""), status_message(""), friend_norequest(false)
 {
 }
 
@@ -39,6 +40,9 @@ int ClitoxConfig::parseCmd
 	struct arg_str *a_status_message = arg_str0("s", "status", "<text>", "initial status message");
 	struct arg_str *a_ids_to = arg_strn(NULL, NULL, "<Tox ID>", 0, 100, "Send to clients by TOX identifier");
 	struct arg_str *a_nodes_json = arg_strn("b", "boot", "<file name>", 0, 100, "Bootstrap nodes file");
+	struct arg_lit *a_friend_norequest = arg_lit0("Q", "norequest", "Do not request to add me to friend list");
+	struct arg_str *a_message_friend_request = arg_str0("a", "add_message", "<text>", "friend request message. Default " DEF_MESSAGE_FRIEND_REQUEST);
+	
 	// Tox options
 	struct arg_lit *a_ipv6_disabled = arg_lit0(NULL, "no-ipv6", "Disable IPv6");
     struct arg_lit *a_udp_disabled = arg_lit0(NULL, "no-udp", "Disable UDP");
@@ -56,7 +60,7 @@ int ClitoxConfig::parseCmd
 
 	void* argtable[] = { 
 		a_print_tox_id, a_file_name, a_nick_name, a_ids_to, a_status_message,
-		a_nodes_json,
+		a_nodes_json, a_friend_norequest, a_message_friend_request,
 		
 		a_ipv6_disabled, a_udp_disabled, a_local_discovery_disabled, a_proxy_type,
 		a_proxy_host, a_proxy_port, a_start_port, a_end_port, a_tcp_port,
@@ -148,6 +152,13 @@ int ClitoxConfig::parseCmd
 		nodes_json.push_back(a_nodes_json->sval[i]);
 	}
 	
+	friend_norequest = (a_friend_norequest->count > 0);
+	if (a_message_friend_request->count) {
+		message_friend_request = std::string(*a_message_friend_request->sval);
+	}
+	else
+		message_friend_request = DEF_MESSAGE_FRIEND_REQUEST;
+
 	// special case: '--help' takes precedence over error reporting
 	if ((a_help->count) || nerrors)
 	{

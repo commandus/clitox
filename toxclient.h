@@ -43,10 +43,11 @@ private:
 	TOX_CONNECTION connectionStatus;
 	std::string fileName;
 	ToxReceiver *toxReceiver;
-    bool own_receiver;
+    bool ownReceiver;
 	Tox *tox;
 	std::vector <uint32_t> friends;
-
+	bool friendNoRequest;
+	std::string inviteMessage;
 	void addToList();
 	void rmFromList();
 public:
@@ -58,7 +59,9 @@ public:
 		const std::vector<struct DHT_node> &nodes,
 		const std::string &filename,
 		const std::string &nick_name,
-		const std::string &status
+		const std::string &status,
+		bool friend_norequest,
+		const std::string &invite_message
 	);
 
     ~ToxClient();
@@ -85,13 +88,13 @@ public:
 	void setNick(const std::string &nick);
 	void setStatus(const std::string &message);
 
-	void connection_status
+	void setConnectionStatus
 	(
 		TOX_CONNECTION connection_status, 
 		void *user_data
 	);
 	
-	void friend_message
+	void friendMessage
 	(
 		uint32_t friend_number, 
 		TOX_MESSAGE_TYPE type, 
@@ -100,7 +103,7 @@ public:
 		void *user_data
 	);
 
-	void friend_request
+	void friendRequest
 	(
 		const uint8_t *public_key, 
 		const uint8_t *message, 

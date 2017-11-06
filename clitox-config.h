@@ -40,6 +40,8 @@ public:
 	std::string status_message;						///< initial status message
 	std::vector<std::string> ids_to;				///< TOX identifier (in hex)
 	std::vector<std::string> nodes_json;			///< bootstrap nodes list json file
+	bool friend_norequest;
+	std::string message_friend_request;
 
 	ClitoxConfig();
 	ClitoxConfig

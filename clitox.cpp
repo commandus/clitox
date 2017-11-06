@@ -80,7 +80,8 @@ int main(int argc, char** argv)
 	if (nodes.empty())
 		getDefaultNodes(nodes);
 
-	toxclient = new ToxClient(&toxoptions, nodes, config.file_name, config.nick_name, config.status_message);
+	toxclient = new ToxClient(&toxoptions, nodes, config.file_name, config.nick_name, config.status_message, 
+		config.friend_norequest, config.message_friend_request);
 
 	std::string r = toxclient->getIdHex();
 
@@ -93,7 +94,7 @@ int main(int argc, char** argv)
 			break;
 		default:
 		{
-			std::cerr << "Tox ID: " << r << std::endl;
+			std::cerr << "ToxID: " << r << std::endl;
 			
 			ToxReceiverStream toxreceiverstream(std::cin, std::cout, std::cerr);
 			toxclient->setReceiver(&toxreceiverstream);
@@ -106,7 +107,6 @@ int main(int argc, char** argv)
 			std::thread t(read_loop, toxclient,  &toxreceiverstream, stopRequest);
 			t.detach();
 			toxclient->run();
-			
 		}
 	}
 

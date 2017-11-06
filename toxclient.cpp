@@ -253,7 +253,7 @@ void friend_request_cb(
 {
 	ToxClient *cli =  ToxClient::findByTox(tox);
 	if (cli)
-		cli->friend_request(public_key, message, length, user_data);
+		cli->friendRequest(public_key, message, length, user_data);
 }
 
 void friend_message_cb
@@ -268,7 +268,7 @@ void friend_message_cb
 {
 	ToxClient *cli =  ToxClient::findByTox(tox);
 	if (cli)
-		cli->friend_message(friend_number, type, message, length, user_data);
+		cli->friendMessage(friend_number, type, message, length, user_data);
 }
 
 void self_connection_status_cb
@@ -280,13 +280,13 @@ void self_connection_status_cb
 {
 	ToxClient *cli =  ToxClient::findByTox(tox);
 	if (cli)
-		cli->connection_status(connection_status, user_data);
+		cli->setConnectionStatus(connection_status, user_data);
 }
 
 ToxClient::ToxClient()
-	: stopped(false), connectionStatus(TOX_CONNECTION_NONE), fileName(""), toxReceiver(NULL), own_receiver(false)
+	: stopped(false), connectionStatus(TOX_CONNECTION_NONE), fileName(""), toxReceiver(NULL), ownReceiver(false),
+	tox(NULL), friendNoRequest(false), inviteMessage("Add me to friend")
 {
-	tox = NULL;	// tox_new(NULL, NULL)
 }
 
 ToxClient::ToxClient
@@ -295,9 +295,12 @@ ToxClient::ToxClient
 	const std::vector<struct DHT_node> &nodes,
 	const std::string &filename,
 	const std::string &nick,
-	const std::string &status
+	const std::string &status,
+	bool friend_norequest,
+	const std::string &invite_message
 )
-	: stopped(false), connectionStatus(TOX_CONNECTION_NONE), fileName(filename), toxReceiver(NULL), own_receiver(false)
+	: stopped(false), connectionStatus(TOX_CONNECTION_NONE), fileName(filename), toxReceiver(NULL), ownReceiver(false), 
+		friendNoRequest(friend_norequest), inviteMessage(invite_message)
 {
 	// Tox_Options *options = tox_options_new(NULL);
 	if (readTox(&tox, toxoptions, filename) != TOX_ERR_NEW_OK)
@@ -337,7 +340,7 @@ void ToxClient::setReceiver
 )
 {
     toxReceiver = value;
-    own_receiver = false;
+    ownReceiver = false;
 }
 
 #ifdef __ANDROID__
@@ -400,7 +403,7 @@ ToxClient::~ToxClient()
 	rmFromList();
 	tox_kill(tox);
     if (toxReceiver) {
-        if (own_receiver) {
+        if (ownReceiver) {
             delete toxReceiver;
         }
     }
@@ -421,23 +424,23 @@ void ToxClient::setStatus(const std::string &message)
 	tox_self_set_status_message(tox, (const uint8_t *) message.c_str(), message.length(), NULL);
 }
 
-void ToxClient::connection_status
+void ToxClient::setConnectionStatus
 (
 	TOX_CONNECTION connection_status, 
 	void *user_data
 )
 {
-	connectionStatus = connection_status;
+	this->connectionStatus = connection_status;
 	if (toxReceiver)
 		toxReceiver->onConnectionStatus(this, connection_status);
 }
 
 TOX_CONNECTION ToxClient::getConnectionStatus()
 {
-	return connectionStatus;
+	return this->connectionStatus;
 }
 
-void ToxClient::friend_message
+void ToxClient::friendMessage
 (
 	uint32_t friend_number, 
 	TOX_MESSAGE_TYPE type, 
@@ -450,7 +453,7 @@ void ToxClient::friend_message
 		toxReceiver->onMessage(this, friend_number, std::string((char *) message, length), user_data);
 }
 
-void ToxClient::friend_request
+void ToxClient::friendRequest
 (
 	const uint8_t *public_key, 
 	const uint8_t *message, 
@@ -529,14 +532,14 @@ uint32_t ToxClient::addFriend
 )
 {
 	std::string toxid = hex_to_bin(tox_id_hex);
-	std::string sinvite = "Add me to friend";
-	// tox_friend_add(tox, (const uint8_t *) tox_id_hex.c_str(), (const uint8_t *) tox_id_hex.c_str(), tox_id_hex.length(), NULL);
 	TOX_ERR_FRIEND_ADD e;
 	uint32_t r = tox_friend_by_public_key(tox, (const uint8_t *) toxid.c_str(), NULL);
 	if (r == (uint32_t) -1)     // 4294967295
 	{
-		r = tox_friend_add(tox, (const uint8_t *)toxid.c_str(), (const uint8_t *)sinvite.c_str(), sinvite.size(), &e);
-		// r = tox_friend_add_norequest(tox, (const uint8_t *) toxid.c_str(), &e);
+		if (friendNoRequest)
+			r = tox_friend_add_norequest(tox, (const uint8_t *)toxid.c_str(), &e);
+		else
+			r = tox_friend_add(tox, (const uint8_t *)toxid.c_str(), (const uint8_t *)inviteMessage.c_str(), inviteMessage.size(), &e);
 		if (r == (uint32_t) -1) // 4294967295
 			std::cerr << "Error " << e << std::endl;
 	}
