@@ -43,8 +43,6 @@ public:
 		TOX_MESSAGE_TYPE *message_type,
 		std::string *m
 	) = 0;
-	
-	void read_line();
 };
 
 #endif // TOXRECEIVER_H
