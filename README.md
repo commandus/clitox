@@ -5,6 +5,11 @@ Simple command line interface (CLI) TOX client.
 - [Repository git@github.com:commandus/clitox.git](https://github.com/commandus/clitox.git)
 - [Site https://github.com/commandus/clitox](https://github.com/commandus/clitox)
 
+
+Related projects: 
+
+- [Android client git@gitlab.com:commandus/rtox.git] (https://gitlab.com/commandus/rtox)
+
 ## Usage
 
 clitox <Tox ID> 
@@ -148,3 +153,6 @@ Make each libraries static
 ```
 if you want.
 
+## License
+
+GNU General Public License v3
