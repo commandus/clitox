@@ -8,7 +8,7 @@ Simple command line interface (CLI) TOX client.
 
 Related projects: 
 
-- [Android client git@gitlab.com:commandus/rtox.git] (https://gitlab.com/commandus/rtox)
+- [Android client] (https://gitlab.com/commandus/rtox)
 
 ## Usage
 

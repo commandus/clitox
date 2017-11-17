@@ -27,6 +27,7 @@ nobase_dist_include_HEADERS = \
 	rapidjson/internal/biginteger.h  rapidjson/internal/dtoa.h rapidjson/internal/itoa.h rapidjson/internal/pow10.h rapidjson/internal/stack.h rapidjson/internal/strtod.h \
 	rapidjson/internal/diyfp.h       rapidjson/internal/ieee754.h rapidjson/internal/meta.h rapidjson/internal/regex.h rapidjson/internal/strfunc.h rapidjson/internal/swap.h \
 	rapidjson/msinttypes/inttypes.h  rapidjson/msinttypes/stdint.h \
+	intent/variablecolumn.h          intent/intenttemplate.h
 	toxnodejson.h
 
 common_src = 
@@ -38,7 +39,8 @@ commonlibs = -L/usr/local/lib/ -largtable2
 #
 clitox_SOURCES= \
 	clitox-config.cpp  clitox.cpp toxclient.cpp clientlist.cpp toxreceiverstream.cpp toxmessage.cpp \
-	toxnodejson.cpp \
+	intent/variablecolumn.cpp \
+	toxnodejson.cpp intent/intenttemplate.cpp \
 	$(common_src)
 
 clitox_LDADD = $(commonlibs) -lsodium -ltoxcore
