@@ -33,6 +33,8 @@ public:
 		const std::vector<VariableColumn> &variableColumnList,
 		const std::string &imageUri
 	);
+    
+    IntentTemplate(const std::string &value);
 	
 	std::string getTemplateString();
 
@@ -72,6 +74,10 @@ public:
 	int getId();
 
 	void setId(int value);
+    
+    bool operator==(const IntentTemplate& value) const;
+    
+    std::vector<VariableColumn> parseVariableColumnList(const std::string &value);
 };
 
 #endif

@@ -59,6 +59,8 @@ public:
 		bool encode
 	);
 	
+    VariableColumn(const std::string &value);
+    
 	enum Variable getVariable();
 
     void setVariable(enum Variable variable);
@@ -98,6 +100,7 @@ public:
 	std::string toString();
 	
 	VariableColumn& operator=(const VariableColumn& other);
+    bool operator==(const VariableColumn& that) const;
 };
 
 #endif

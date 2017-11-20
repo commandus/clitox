@@ -110,3 +110,54 @@ VariableColumn& VariableColumn::operator=(const VariableColumn& other)
 	}
 	return *this;
 }
+
+bool VariableColumn::operator==(const VariableColumn& other) const
+{
+    if (variable != other.variable)
+        return false;
+    if (column != other.column)
+        return false;
+    if (idx != other.idx)
+        return false;
+    if (name != other.name)
+        return false;
+    if (len != other.len)
+        return false;
+    if (encode != other.encode)
+        return false;
+    return true;
+}
+
+/**
+ * column:variable:name:len:e
+ */
+VariableColumn::VariableColumn(const std::string &value)
+{
+    int i = 0;
+    std::size_t b = 0;
+    for (std::size_t it(value.find(':')); it != std::string::npos; ++it)
+    {
+        std::string s(b, it - b);
+        switch (i) 
+        {
+            case 0:
+                column = strtod(s.c_str(), NULL);
+                break;
+            case 1:
+                variable = strtod(s.c_str(), NULL);
+                break;
+            case 2:
+                name = s;
+                break;
+            case 3:
+                len = strtod(s.c_str(), NULL);
+                break;
+            case 4:
+                encode = s.find("e") != s.end();
+                break;
+            default:
+                break;
+        }
+        i++;
+    }
+}
