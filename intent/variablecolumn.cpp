@@ -141,19 +141,19 @@ VariableColumn::VariableColumn(const std::string &value)
         switch (i) 
         {
             case 0:
-                column = strtod(s.c_str(), NULL);
+                column = strtol(s.c_str(), NULL, 10);
                 break;
             case 1:
-                variable = strtod(s.c_str(), NULL);
+                variable = (enum Variable) strtol(s.c_str(), NULL, 10);
                 break;
             case 2:
                 name = s;
                 break;
             case 3:
-                len = strtod(s.c_str(), NULL);
+                len = strtol(s.c_str(), NULL, 10);
                 break;
             case 4:
-                encode = s.find("e") != s.end();
+                encode = s.find('e') != std::string::npos;
                 break;
             default:
                 break;

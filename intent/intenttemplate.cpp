@@ -142,8 +142,8 @@ bool IntentTemplate::operator==(const IntentTemplate& that) const
 IntentTemplate::IntentTemplate(const std::string &value) 
 {
     int i = 0;
-    std::string::const_iterator b = value.begin();
-    for (std::string::const_iterator it(value.find('|', b)); it != value.end(); ++it)
+    std::size_t b = 0;
+    for (std::size_t it(value.find('|', b)); it != std::string::npos; ++it)
     {
         std::string s(b, it - b);
         switch (i) {
@@ -151,7 +151,7 @@ IntentTemplate::IntentTemplate(const std::string &value)
                 setLang(s);
                 break;
             case 1:
-                setImage(s);
+                setImageUri(s);
                 break;
             case 2:
                 setName(s);
@@ -177,8 +177,8 @@ std::vector<VariableColumn> IntentTemplate::parseVariableColumnList(const std::s
 {
     std::vector<VariableColumn> r;
     int i = 0;
-    std::string::const_iterator b = value.begin();
-    for (std::string::const_iterator it(value.find(",")); it != value.end(); ++it)
+    std::size_t b = 0;
+    for (std::size_t it(value.find(',')); it != std::string::npos; ++it)
     {
         std::string s(b, it - b);
         VariableColumn vc(s);
