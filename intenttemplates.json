@@ -1,0 +1,394 @@
+{
+	"variables": [{
+			"name": "Phone",
+			"hint": "Your phone number",
+			"calculated": "true",
+			"string": "n/a"
+		},
+		{
+			"name": "IMEI",
+			"hint": "Your IMEI",
+			"calculated": "true",
+			"string": "n/a"
+		},
+		{
+			"name": "Network Identifier",
+			"hint": "Your network Identifier",
+			"calculated": "true",
+			"string": "n/a"
+		},
+		{
+			"name": "Identifier",
+			"hint": "Customer id",
+			"calculated": "true",
+			"string": "n/a"
+		},
+		{
+			"name": "name",
+			"hint": "Your name/nick",
+			"calculated": "true",
+			"string": "n/a"
+		},
+		{
+			"name": "Now",
+			"hint": "Now",
+			"calculated": "true",
+			"string": "n/a"
+		},
+		{
+			"name": "Latitude",
+			"hint": "Latitude",
+			"calculated": "true",
+			"string": "n/a"
+		},
+		{
+			"name": "Longitude",
+			"hint": "Longitude",
+			"calculated": "true",
+			"string": "n/a"
+		},
+		{
+			"name": "Cell Id",
+			"hint": "Cell Id",
+			"calculated": "true",
+			"string": "n/a"
+		},
+		{
+			"name": "OS name",
+			"hint": "OS name",
+			"calculated": "true",
+			"string": "n/a"
+		},
+		{
+			"name": "OS version",
+			"hint": "OS version",
+			"calculated": "true",
+			"string": "n/a"
+		},
+		{
+			"name": "Model name",
+			"hint": "Model name",
+			"calculated": "true"
+		},
+		{
+			"name": "Photo",
+			"hint": "Photo",
+			"calculated": "true",
+			"string": "n/a"
+		},
+		{
+			"name": "Audio",
+			"hint": "Audio",
+			"calculated": "true",
+			"string": "n/a"
+		},
+		{
+			"name": "Video",
+			"hint": "Video",
+			"calculated": "true",
+			"string": "n/a"
+		},
+		{
+			"name": "Phone",
+			"hint": "Select contact phone",
+			"calculated": "false"
+		},
+		{
+			"name": "e-mail",
+			"hint": "Select contact e-mail",
+			"calculated": "false"
+		},
+		{
+			"name": "Application",
+			"hint": "Select application",
+			"calculated": "false"
+		},
+		{
+			"name": "Phone",
+			"hint": "Enter phone",
+			"calculated": "false"
+		},
+		{
+			"name": "e-mail",
+			"hint": "Enter e-mail",
+			"calculated": "false"
+		},
+		{
+			"name": "Web",
+			"hint": "Enter http address",
+			"calculated": "false"
+		},
+		{
+			"name": "Number",
+			"hint": "Enter number",
+			"calculated": "false"
+		},
+		{
+			"name": "Date",
+			"hint": "Enter date",
+			"calculated": "false"
+		},
+		{
+			"name": "Time",
+			"hint": "Enter time",
+			"calculated": "false"
+		},
+		{
+			"name": "Text",
+			"hint": "Enter text",
+			"calculated": "false"
+		},
+		{
+			"name": "Description",
+			"hint": "Enter text (up to 3 lines)",
+			"calculated": "false"
+		}
+	],
+	"templates": [{
+			"lang": "en",
+			"img": "",
+			"name": "Application",
+			"description": "Start selected application",
+			"template": "",
+			"variables": [{
+				"column": 0,
+				"index": 18,
+				"name": "Application",
+				"length": 0,
+				"encode": true
+			}]
+		},
+		{
+			"lang": "en",
+			"img": "",
+			"name": "Dial",
+			"description": "Dial a phone number",
+			"template": "tel:",
+			"variables": [{
+				"column": 4,
+				"index": 19,
+				"name": "Phone",
+				"length": 0,
+				"encode": true
+			}]
+		},
+		{
+			"lang": "en",
+			"img": "",
+			"name": "Dial contact",
+			"description": "Dial a phone number from your contacts",
+			"template": "tel",
+			"variables": [{
+				"column": 4,
+				"index": 16,
+				"name": "Phone number",
+				"length": 0,
+				"encode": true
+			}]
+		},
+		{
+			"lang": "en",
+			"img": "",
+			"name": "SMS to contact",
+			"description": "Send SMS to your contact",
+			"template": "sms:",
+			"variables": [{
+				"column": 4,
+				"index": 16,
+				"name": "Mobile phone",
+				"length": 0,
+				"encode": true
+			}]
+		},
+		{
+			"lang": "en",
+			"img": "",
+			"name": "e-mail",
+			"description": "Send e-mail to contact",
+			"template": "#Intent;action=android.intent.action.SEND;type=text/plain;S.android.intent.extra.EMAIL=;S.android.intent.extra.SUBJECT=;S.android.intent.extra.TEXT=;S.com.commandus.intent.fix.array=android.intent.extra.EMAIL;end",
+			"variables": [{
+				"column": 87,
+				"index": 17,
+				"name": "e-mail",
+				"length": 0,
+				"encode": true
+			}, {
+				"column": 119,
+				"index": 25,
+				"name": "Subject",
+				"length": 0,
+				"encode": true
+			}, {
+				"column": 148,
+				"index": 26,
+				"name": "Text",
+				"length": 0,
+				"encode": true
+			}]
+		},
+		{
+			"lang": "en",
+			"img": "",
+			"name": "HTTP",
+			"description": "Test",
+			"template": "http://",
+			"variables": [{
+				"column": 7,
+				"index": 21,
+				"name": "Address",
+				"length": 0,
+				"encode": true
+			}, {
+				"column": 7,
+				"index": 23,
+				"name": "Date",
+				"length": 0,
+				"encode": true
+			}, {
+				"column": 7,
+				"index": 24,
+				"name": "Time",
+				"length": 0,
+				"encode": true
+			}, {
+				"column": 7,
+				"index": 25,
+				"name": "One line",
+				"length": 0,
+				"encode": true
+			}, {
+				"column": 7,
+				"index": 22,
+				"name": "Number",
+				"length": 0,
+				"encode": true
+			}]
+		},
+		{
+			"lang": "en",
+			"img": "",
+			"name": "Show image",
+			"description": "Show photo or picture",
+			"template": "#Intent;action=android.intent.action.VIEW;type=image/*;end",
+			"variables": [{
+				"column": 0,
+				"index": 13,
+				"name": "Photo",
+				"length": 0,
+				"encode": false
+			}]
+		},
+		{
+			"lang": "en",
+			"img": "",
+			"name": "Play sound",
+			"description": "Play audio record",
+			"template": "#Intent;action=android.intent.action.VIEW;type=audio/*;end",
+			"variables": [{
+				"column": 0,
+				"index": 14,
+				"name": "Audio",
+				"length": 0,
+				"encode": false
+			}]
+		},
+		{
+			"lang": "en",
+			"img": "",
+			"name": "Play video",
+			"description": "Play video",
+			"template": "#Intent;action=android.intent.action.VIEW;type=video/*;end",
+			"variables": [{
+				"column": 0,
+				"index": 14,
+				"name": "Video",
+				"length": 0,
+				"encode": false
+			}]
+		},
+		{
+			"lang": "en",
+			"img": "",
+			"name": "Twitter",
+			"description": "Send post to Twitter",
+			"template": "#Intent;action=android.intent.action.SEND;type=text/plain;component=com.twitter.android/com.twitter.applib.PostActivity;S.android.intent.extra.TEXT=;end",
+			"variables": [{
+				"column": 148,
+				"index": 25,
+				"name": "Twit",
+				"length": 0,
+				"encode": false
+			}]
+		},
+		{
+			"lang": "en",
+			"img": "",
+			"name": "Facebook status",
+			"description": "Send post to Facebook",
+			"template": "#Intent;action=android.intent.action.SEND;type=text/plain;component=com.facebook.katana/.activity.composer.ImplicitShareIntentHandler;S.android.intent.extra.TEXT=;end",
+			"variables": [{
+				"column": 162,
+				"index": 25,
+				"name": "Status",
+				"length": 0,
+				"encode": false
+			}]
+		},
+		{
+			"lang": "en",
+			"img": "",
+			"name": "Viber message",
+			"description": "Send viber message",
+			"template": "#Intent;action=android.intent.action.SEND;type=text/plain;component=com.viber.voip/.WelcomeShareActivity;S.android.intent.extra.TEXT=;S.android.intent.extra.EXTRA_PHONE_NUMBER=;end",
+			"variables": [{
+				"column": 0,
+				"index": 25,
+				"name": "Message",
+				"length": 0,
+				"encode": false
+			}]
+		},
+		{
+			"lang": "en",
+			"img": "",
+			"name": "Viber call",
+			"description": "Place a call using Viber",
+			"template": "tel:#Intent;action=com.viber.voip.action.CALL;l.contact_id=-1;B.external_call=false;end",
+			"variables": [{
+				"column": 4,
+				"index": 19,
+				"name": "Viber phone number",
+				"length": 0,
+				"encode": true
+			}]
+		},
+		{
+			"lang": "en",
+			"img": "",
+			"name": "Viber call to contact",
+			"description": "Place a call using Viber",
+			"template": "tel:#Intent;action=com.viber.voip.action.CALL;l.contact_id=-1;B.external_call=false;end",
+			"variables": [{
+				"column": 4,
+				"index": 16,
+				"name": "Viber phone",
+				"length": 0,
+				"encode": true
+			}]
+		},
+		{
+			"lang": "en",
+			"img": "",
+			"name": "Dial Internet phone",
+			"description": "Dial a SIP phone",
+			"template": "sip:",
+			"variables": [{
+				"column": 4,
+				"index": 17,
+				"name": "SIP address",
+				"length": 0,
+				"encode": true
+			}]
+		}
+	]
+}
