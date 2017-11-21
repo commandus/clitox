@@ -3,6 +3,11 @@
 
 static const char SEPARATOR_2 = ':';
 
+VariableColumn::VariableColumn()
+	: column(0), idx(0), name(""), len(0), encode(false)
+{
+}
+
 /**
  * Variable at column of IntentTemplate
  * @see IntentTemplateHelper
