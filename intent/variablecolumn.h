@@ -19,6 +19,8 @@ private:
 	bool encode;
 
 public:
+    VariableColumn();
+
 	VariableColumn
 	(
 		Variable variable,
