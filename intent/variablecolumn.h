@@ -6,42 +6,12 @@
 #define VARIABLE_COLUMN_H
 
 #include <string>
-
-typedef enum Variable 
-{
-	NONE,
-	PHONE,
-	IMEI,
-	NETWORKID,
-	ID,
-	NAME,
-	NOW,
-	LATITUDE,
-	LONGITUDE,
-	CID,
-	OSNAME,
-	OSVER,
-	MODEL,
-	URL_PHOTO,
-	URL_AUDIO,
-	URL_VIDEO,
-	SEL_PHONE,
-	SEL_EMAIL,
-	SEL_APP,
-	INPUT_PHONE,
-	INPUT_EMAIL,
-	INPUT_HTTP,
-	INPUT_NUMBER,
-	INPUT_DATE,
-	INPUT_TIME,
-	INPUT_LINE,
-	INPUT_TEXT
-} Variable;
+#include "variable.h"
 
 class VariableColumn
 {
 private:
-	enum Variable variable;
+	Variable variable;
 	int column;
 	int idx;
 	std::string name;
@@ -51,7 +21,7 @@ private:
 public:
 	VariableColumn
 	(
-		enum Variable variable,
+		Variable variable,
 		int column,
 		int idx,
 		const std::string &name,
@@ -61,9 +31,9 @@ public:
 	
     VariableColumn(const std::string &value);
     
-	enum Variable getVariable();
+	Variable getVariable();
 
-    void setVariable(enum Variable variable);
+    void setVariable(Variable variable);
 
     int getColumn();
 

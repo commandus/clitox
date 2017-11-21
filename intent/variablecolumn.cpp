@@ -9,7 +9,7 @@ static const char SEPARATOR_2 = ':';
  */
 VariableColumn::VariableColumn
 (
-	enum Variable variable,
+	Variable variable,
 	int column,
 	int idx,
 	const std::string &name,
@@ -25,11 +25,11 @@ VariableColumn::VariableColumn
 	this->encode = encode;
 }
 
-enum Variable VariableColumn::getVariable() {
+Variable VariableColumn::getVariable() {
 	return variable;
 }
 
-void VariableColumn::setVariable(enum Variable variable) {
+void VariableColumn::setVariable(Variable variable) {
 	this->variable = variable;
 }
 
@@ -88,7 +88,7 @@ std::string VariableColumn::toString()
 {
 	std::stringstream ss;
 	ss << getColumn() << SEPARATOR_2 
-		<< (int) getVariable() << SEPARATOR_2
+		<< getVariable().toString() << SEPARATOR_2
 		<< getName() << SEPARATOR_2
 		<< getLen() << SEPARATOR_2
 		<< (isEncode() ? "e" : "");
@@ -144,7 +144,7 @@ VariableColumn::VariableColumn(const std::string &value)
                 column = strtol(s.c_str(), NULL, 10);
                 break;
             case 1:
-                variable = (enum Variable) strtol(s.c_str(), NULL, 10);
+                variable.setId(strtol(s.c_str(), NULL, 10));
                 break;
             case 2:
                 name = s;
