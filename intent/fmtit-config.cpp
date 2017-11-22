@@ -71,6 +71,11 @@ int FmtitConfig::parseCmd
 		nerrors++;
 	}
 
+	for (int i = 0; i < a_arguments->count; i++)
+	{
+		arguments.push_back(a_arguments->sval[i]);
+	}
+
 	// special case: '--help' takes precedence over error reporting
 	if ((a_help->count) || nerrors)
 	{

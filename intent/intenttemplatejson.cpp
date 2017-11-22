@@ -65,7 +65,6 @@ static std::string file2string
 	return file2string(filename.c_str());
 }
 
-
 /**
   * @brief CURL write callback
   */
