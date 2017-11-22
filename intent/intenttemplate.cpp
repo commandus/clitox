@@ -5,6 +5,12 @@
 #include <sstream>
 #include "intenttemplate.h"
 
+IntentTemplate::IntentTemplate() 
+	: templateString(""), name(""), lang(""), description(""), imageUri("")
+{
+
+}
+
 IntentTemplate::IntentTemplate
 (
 	const std::string &templateString,
@@ -22,7 +28,6 @@ IntentTemplate::IntentTemplate
 	this->variableColumnList = variableColumnList;
 	this->imageUri = imageUri;
 }
-
 
 std::string IntentTemplate::getTemplateString() 
 {

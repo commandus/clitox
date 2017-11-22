@@ -12,11 +12,11 @@ int main(int argc, char** argv)
 	if (config.error())
 		exit(config.error());
 
-	std::cout << config.templateName << " ";
-	for (int i = 0; i < config.arguments.size(); i++)
+	std::vector<IntentTemplate> its;
+	load_json_files(its, config.templateFileNames);
+	for (int i = 0; i < its.size(); i++)
 	{
-		std::cout << config.arguments[i] << " ";
+		std::cout << its[i].getId() << "\t" << its[i].getName() << std::endl;
 	}
-	
 	return 0;
 }

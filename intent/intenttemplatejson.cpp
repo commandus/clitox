@@ -1,5 +1,6 @@
 #include <fstream>
 #include <curl/curl.h>
+#include <iostream>
 
 #include "intenttemplate.h"
 
@@ -15,31 +16,132 @@ int parse
 	const char *json
 )
 {
+	int r = 0;
 	if (!json)
-		return 1;
+		return r;
 	Document d;
 	d.Parse(json);
-	
-	Value &variables = d["variables"];
-	std::vector<VariableColumn> vcs;
-	if (variables.IsArray())
+
+	// load argument list
+	std::vector<Variable> args;
+	if (d.HasMember("arguments"))
 	{
-		for (SizeType i = 0; i < variables.Size(); i++)
+		Value &arguments = d["arguments"];
+		if (arguments.IsArray())
 		{
-			Value &name = variables[i]["name"];
-			Value &hint = variables[i]["hint"];
-			Value &predefined = variables[i]["predefined"];
-			std::string n;
-			if (name.IsString())
-				n = name.GetString();
-			std::string h;
-			if (hint.IsString())
-				h = hint.GetString();
-			VariableColumn vc;
-			vcs.push_back(vc);
+			for (SizeType i = 0; i < arguments.Size(); i++)
+			{
+				Variable v;
+				v.setId(i);
+
+				Value &arg = arguments[i];
+				if (arg.HasMember("name"))
+				{
+					Value &name = arg["name"];
+					if (name.IsString())
+						v.setName(name.GetString());
+				}
+				std::string h;
+				if (arg.HasMember("hint"))
+				{
+					Value &hint = arg["hint"];
+					if (hint.IsString())
+						v.setHint(hint.GetString());
+				}
+				
+				args.push_back(v);
+			}
 		}
 	}
-	return 0;
+	
+	// load templates
+	if (d.HasMember("templates"))
+	{
+		Value &templates = d["templates"];
+		if (templates.IsArray())
+		{
+			for (SizeType i = 0; i < templates.Size(); i++)
+			{
+				IntentTemplate v;
+				v.setId(i);
+
+				Value &intenttemplate = templates[i];
+				if (intenttemplate.HasMember("lang"))
+				{
+					Value &val = intenttemplate["lang"];
+					if (val.IsString())
+						v.setLang(val.GetString());
+				}
+				if (intenttemplate.HasMember("name"))
+				{
+					Value &val = intenttemplate["name"];
+					if (val.IsString())
+						v.setLang(val.GetString());
+				}
+				if (intenttemplate.HasMember("description"))
+				{
+					Value &val = intenttemplate["description"];
+					if (val.IsString())
+						v.setDescription(val.GetString());
+				}
+				if (intenttemplate.HasMember("template"))
+				{
+					Value &val = intenttemplate["template"];
+					if (val.IsString())
+						v.setLang(val.GetString());
+				}
+
+				if (intenttemplate.HasMember("variables"))
+				{
+					Value &variables = intenttemplate["variables"];
+					if (variables.IsArray())
+					{
+						for (SizeType i = 0; i < templates.Size(); i++)
+						{
+							Value &variable = variables[i];
+							VariableColumn vc;
+							if (variable.HasMember("column"))
+							{
+								Value &val = variable["column"];
+								if (val.IsInt())
+									vc.setColumn(val.GetInt());
+							}
+							if (variable.HasMember("index"))
+							{
+								Value &val = variable["index"];
+								if (val.IsInt())
+									vc.setIdx(val.GetInt());
+							}
+							if (variable.HasMember("name"))
+							{
+								Value &val = variable["name"];
+								if (val.IsString())
+									vc.setName(val.GetString());
+							}
+							if (variable.HasMember("length"))
+							{
+								Value &val = variable["length"];
+								if (val.IsInt())
+									vc.setLen(val.GetInt());
+							}
+							if (variable.HasMember("encode"))
+							{
+								Value &val = variable["encode"];
+								if (val.IsBool())
+									vc.setEncode(val.GetBool());
+							}
+						}
+						std::vector<VariableColumn> vcs;
+						v.setVariableColumnList(vcs);
+					}
+				}
+
+				retval.push_back(v);
+				r++;
+			}
+		}
+	}
+	return r;
 }
 
 static std::string file2string(std::istream &strm)
@@ -97,13 +199,13 @@ static std::string url2string
 	return retval;
 }
  
-
 int load_json_files
 (
 	std::vector<IntentTemplate> &retval,
 	const std::vector<std::string> &file_names
 )
 {
+	int r = 0;
 	for (std::vector<std::string>::const_iterator it(file_names.begin()); it != file_names.end(); ++it)
 	{
 		std::string json = file2string(*it);
@@ -112,7 +214,8 @@ int load_json_files
 			// Try load from Internet
 			json = url2string(*it);
 		}
-		parse(retval, json.c_str());
+		r += parse(retval, json.c_str());
 	}
-	return 0;
+	return r;
 }
+

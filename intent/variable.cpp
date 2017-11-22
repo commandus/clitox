@@ -11,12 +11,14 @@ Variable::Variable(
 	int id,
 	std::string name,
 	std::string value,
+	std::string hint,
 	std::string lang,
 	std::string formula
 )
 {
 	this->id = id;
 	this->name = name;
+	this->hint = hint;
 	this->value = name;
 	this->lang = lang;
 	this->formula = formula;
@@ -26,6 +28,7 @@ Variable::Variable(const Variable& other)
 {
 	id = other.id;
 	name = other.name;
+	hint = other.hint;
 	value = other.name;
 	lang = other.lang;
 	formula = other.formula;
@@ -41,6 +44,7 @@ Variable& Variable::operator=(const Variable& other)
 	Variable r;
 	r.id = other.id;
 	r.name = other.name;
+	r.hint = other.hint;
 	r.value = other.name;
 	r.lang = other.lang;
 	r.formula = other.formula;
@@ -52,6 +56,8 @@ bool Variable::operator==(const Variable& other) const
 	if (id != other.id)
 		return false;
 	if (name != other.name)
+		return false;
+	if (hint != other.hint)
 		return false;
 	if (value != other.name)
 		return false;
@@ -67,6 +73,8 @@ bool Variable::operator!=(const Variable& other) const
 	if (id != other.id)
 		return true;
 	if (name != other.name)
+		return true;
+	if (hint != other.hint)
 		return true;
 	if (value != other.name)
 		return true;
@@ -94,6 +102,11 @@ std::string Variable::getName()
 	return name;
 }
 
+std::string Variable::getHint()
+{
+	return hint;
+}
+
 std::string Variable::getValue()
 {
 	return value;
@@ -117,6 +130,11 @@ void Variable::setId(int value)
 void Variable::setName(const std::string &value)
 {
 	name = value;
+}
+
+void Variable::setHint(const std::string &value)
+{
+	hint = value;
 }
 
 void Variable::setValue(const std::string &v)

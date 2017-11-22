@@ -1,147 +1,107 @@
 {
-	"variables": [{
+	"arguments": [{
 			"name": "myphone",
-			"hint": "My phone number",
-			"calculated": "true",
-			"string": "n/a"
+			"hint": "My phone number"
 		},
 		{
 			"name": "imei",
-			"hint": "IMEI",
-			"calculated": "true",
-			"string": "n/a"
+			"hint": "IMEI"
 		},
 		{
 			"name": "mac",
-			"hint": "MAC address",
-			"calculated": "true",
-			"string": "n/a"
+			"hint": "MAC address"
 		},
 		{
 			"name": "id",
-			"hint": "Identifier",
-			"calculated": "true",
-			"string": "n/a"
+			"hint": "Identifier"
 		},
 		{
 			"name": "name",
-			"hint": "Name or nick",
-			"calculated": "true",
-			"string": "n/a"
+			"hint": "Name or nick"
 		},
 		{
 			"name": "now",
-			"hint": "Current date and time",
-			"calculated": "true",
-			"string": "n/a"
+			"hint": "Current date and time"
 		},
 		{
 			"name": "lat",
-			"hint": "Latitude",
-			"calculated": "true",
-			"string": "n/a"
+			"hint": "Latitude"
 		},
 		{
 			"name": "lon",
-			"hint": "Longitude",
-			"calculated": "true",
-			"string": "n/a"
+			"hint": "Longitude"
 		},
 		{
 			"name": "cellid",
-			"hint": "Cellular network identtifier",
-			"calculated": "true",
-			"string": "n/a"
+			"hint": "Cellular network identtifier"
 		},
 		{
 			"name": "os",
-			"hint": "Operating system name",
-			"calculated": "true",
-			"string": "n/a"
+			"hint": "Operating system name"
 		},
 		{
 			"name": "osver",
-			"hint": "OS version",
-			"calculated": "true",
-			"string": "n/a"
+			"hint": "OS version"
 		},
 		{
 			"name": "model",
-			"hint": "Device model name",
-			"calculated": "true"
+			"hint": "Device model name"
 		},
 		{
 			"name": "photo",
-			"hint": "Photo URI",
-			"calculated": "true",
-			"string": "n/a"
+			"hint": "Photo URI"
 		},
 		{
 			"name": "audio",
-			"hint": "Audio URI",
-			"calculated": "true",
-			"string": "n/a"
+			"hint": "Audio URI"
 		},
 		{
 			"name": "video",
-			"hint": "Video URI",
-			"calculated": "true",
-			"string": "n/a"
+			"hint": "Video URI"
 		},
 		{
 			"name": "cphone",
-			"hint": "Phone number (from my contacts)",
-			"calculated": "false"
+			"hint": "Phone number (from my contacts)"
 		},
 		{
 			"name": "cemail",
-			"hint": "e-mail address (from my contacts)",
-			"calculated": "false"
+			"hint": "e-mail address (from my contacts)"
 		},
 		{
 			"name": "application",
-			"hint": "Application  class name",
-			"calculated": "false"
+			"hint": "Application  class name"
 		},
 		{
 			"name": "phone",
-			"hint": "Any phone number",
-			"calculated": "false"
+			"hint": "Any phone number"
 		},
 		{
 			"name": "email",
-			"hint": "Enter e-mail",
-			"calculated": "false"
+			"hint": "Enter e-mail"
 		},
 		{
 			"name": "www",
-			"hint": "HTTP/HTTPS address",
-			"calculated": "false"
+			"hint": "HTTP/HTTPS address"
 		},
 		{
 			"name": "number",
-			"hint": "Number",
-			"calculated": "false"
+			"hint": "Number"
 		},
 		{
 			"name": "date",
-			"hint": "Date w/o time",
-			"calculated": "false"
+			"hint": "Date w/o time"
 		},
 		{
 			"name": "time",
-			"hint": "Time w/o date",
-			"calculated": "false"
+			"hint": "Time w/o date"
 		},
 		{
 			"name": "text",
-			"hint": "Short text",
-			"calculated": "false"
+			"hint": "Short text"
 		},
 		{
 			"name": "description",
-			"hint": "Long text",
-			"calculated": "false"
+			"hint": "Long text"
 		}
 	],
 	"templates": [{
