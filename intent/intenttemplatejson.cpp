@@ -99,7 +99,7 @@ static std::string url2string
 }
  
 
-int load_json_nodes
+int load_json_files
 (
 	std::vector<IntentTemplate> &retval,
 	const std::vector<std::string> &file_names
