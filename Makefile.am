@@ -17,7 +17,8 @@ CLEANFILES =
 #
 #	Binaries
 #
-bin_PROGRAMS=clitox
+bin_PROGRAMS = clitox fmtit
+
 nobase_dist_include_HEADERS = \
 	clitox.h clitox-config.h toxclient.h clientlist.h toxreceiver.h toxreceiverstream.h toxmessage.h \
 	rapidjson/allocators.h           rapidjson/encodings.h        rapidjson/fwd.h             rapidjson/memorystream.h    rapidjson/prettywriter.h  rapidjson/schema.h        rapidjson/writer.h \
@@ -27,7 +28,7 @@ nobase_dist_include_HEADERS = \
 	rapidjson/internal/biginteger.h  rapidjson/internal/dtoa.h rapidjson/internal/itoa.h rapidjson/internal/pow10.h rapidjson/internal/stack.h rapidjson/internal/strtod.h \
 	rapidjson/internal/diyfp.h       rapidjson/internal/ieee754.h rapidjson/internal/meta.h rapidjson/internal/regex.h rapidjson/internal/strfunc.h rapidjson/internal/swap.h \
 	rapidjson/msinttypes/inttypes.h  rapidjson/msinttypes/stdint.h \
-	intent/variablecolumn.h          intent/intenttemplate.h	intent/intenttemplatejson.h	intent/variable.h \
+	intent/variablecolumn.h          intent/intenttemplate.h	intent/intenttemplatejson.h	intent/variable.h	intent/fmtit.h		intent/fmtit-config.h \
 	toxnodejson.h
 
 common_src = 
@@ -39,12 +40,23 @@ commonlibs = -L/usr/local/lib/ -largtable2
 #
 clitox_SOURCES= \
 	clitox-config.cpp  clitox.cpp toxclient.cpp clientlist.cpp toxreceiverstream.cpp toxmessage.cpp \
-	intent/variablecolumn.cpp \
-	toxnodejson.cpp intent/intenttemplate.cpp intent/intenttemplatejson.cpp intent/variable.cpp \
+	toxnodejson.cpp \
 	$(common_src)
 
 clitox_LDADD = $(commonlibs) -lsodium -ltoxcore
 clitox_CPPFLAGS = $(commoncppflags)
+
+#
+#	fmtit
+#
+fmtit_SOURCES= \
+	intent/variablecolumn.cpp intent/intenttemplate.cpp intent/intenttemplatejson.cpp \
+	intent/variable.cpp intent/fmtit.cpp intent/fmtit-config.cpp \
+	$(common_src)
+
+fmtit_LDADD = $(commonlibs)
+fmtit_CPPFLAGS = $(commoncppflags)
+
 
 #
 #	Configs, readme, CMake etc.

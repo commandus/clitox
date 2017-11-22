@@ -1,146 +1,146 @@
 {
 	"variables": [{
-			"name": "Phone",
-			"hint": "Your phone number",
+			"name": "myphone",
+			"hint": "My phone number",
 			"calculated": "true",
 			"string": "n/a"
 		},
 		{
-			"name": "IMEI",
-			"hint": "Your IMEI",
+			"name": "imei",
+			"hint": "IMEI",
 			"calculated": "true",
 			"string": "n/a"
 		},
 		{
-			"name": "Network Identifier",
-			"hint": "Your network Identifier",
+			"name": "mac",
+			"hint": "MAC address",
 			"calculated": "true",
 			"string": "n/a"
 		},
 		{
-			"name": "Identifier",
-			"hint": "Customer id",
+			"name": "id",
+			"hint": "Identifier",
 			"calculated": "true",
 			"string": "n/a"
 		},
 		{
 			"name": "name",
-			"hint": "Your name/nick",
+			"hint": "Name or nick",
 			"calculated": "true",
 			"string": "n/a"
 		},
 		{
-			"name": "Now",
-			"hint": "Now",
+			"name": "now",
+			"hint": "Current date and time",
 			"calculated": "true",
 			"string": "n/a"
 		},
 		{
-			"name": "Latitude",
+			"name": "lat",
 			"hint": "Latitude",
 			"calculated": "true",
 			"string": "n/a"
 		},
 		{
-			"name": "Longitude",
+			"name": "lon",
 			"hint": "Longitude",
 			"calculated": "true",
 			"string": "n/a"
 		},
 		{
-			"name": "Cell Id",
-			"hint": "Cell Id",
+			"name": "cellid",
+			"hint": "Cellular network identtifier",
 			"calculated": "true",
 			"string": "n/a"
 		},
 		{
-			"name": "OS name",
-			"hint": "OS name",
+			"name": "os",
+			"hint": "Operating system name",
 			"calculated": "true",
 			"string": "n/a"
 		},
 		{
-			"name": "OS version",
+			"name": "osver",
 			"hint": "OS version",
 			"calculated": "true",
 			"string": "n/a"
 		},
 		{
-			"name": "Model name",
-			"hint": "Model name",
+			"name": "model",
+			"hint": "Device model name",
 			"calculated": "true"
 		},
 		{
-			"name": "Photo",
-			"hint": "Photo",
+			"name": "photo",
+			"hint": "Photo URI",
 			"calculated": "true",
 			"string": "n/a"
 		},
 		{
-			"name": "Audio",
-			"hint": "Audio",
+			"name": "audio",
+			"hint": "Audio URI",
 			"calculated": "true",
 			"string": "n/a"
 		},
 		{
-			"name": "Video",
-			"hint": "Video",
+			"name": "video",
+			"hint": "Video URI",
 			"calculated": "true",
 			"string": "n/a"
 		},
 		{
-			"name": "Phone",
-			"hint": "Select contact phone",
+			"name": "cphone",
+			"hint": "Phone number (from my contacts)",
 			"calculated": "false"
 		},
 		{
-			"name": "e-mail",
-			"hint": "Select contact e-mail",
+			"name": "cemail",
+			"hint": "e-mail address (from my contacts)",
 			"calculated": "false"
 		},
 		{
-			"name": "Application",
-			"hint": "Select application",
+			"name": "application",
+			"hint": "Application  class name",
 			"calculated": "false"
 		},
 		{
-			"name": "Phone",
-			"hint": "Enter phone",
+			"name": "phone",
+			"hint": "Any phone number",
 			"calculated": "false"
 		},
 		{
-			"name": "e-mail",
+			"name": "email",
 			"hint": "Enter e-mail",
 			"calculated": "false"
 		},
 		{
-			"name": "Web",
-			"hint": "Enter http address",
+			"name": "www",
+			"hint": "HTTP/HTTPS address",
 			"calculated": "false"
 		},
 		{
-			"name": "Number",
-			"hint": "Enter number",
+			"name": "number",
+			"hint": "Number",
 			"calculated": "false"
 		},
 		{
-			"name": "Date",
-			"hint": "Enter date",
+			"name": "date",
+			"hint": "Date w/o time",
 			"calculated": "false"
 		},
 		{
-			"name": "Time",
-			"hint": "Enter time",
+			"name": "time",
+			"hint": "Time w/o date",
 			"calculated": "false"
 		},
 		{
-			"name": "Text",
-			"hint": "Enter text",
+			"name": "text",
+			"hint": "Short text",
 			"calculated": "false"
 		},
 		{
-			"name": "Description",
-			"hint": "Enter text (up to 3 lines)",
+			"name": "description",
+			"hint": "Long text",
 			"calculated": "false"
 		}
 	],
