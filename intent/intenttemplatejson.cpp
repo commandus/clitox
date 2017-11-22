@@ -135,7 +135,6 @@ int parse
 						v.setVariableColumnList(vcs);
 					}
 				}
-
 				retval.push_back(v);
 				r++;
 			}
