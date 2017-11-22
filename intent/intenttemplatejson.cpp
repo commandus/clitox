@@ -1,9 +1,7 @@
 #include <fstream>
 #include <curl/curl.h>
-#include <iostream>
 
 #include "intenttemplate.h"
-
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
@@ -22,29 +20,29 @@ int parse
 	Document d;
 	d.Parse(json);
 
-	// load argument list
+	// load types list. Useless.
 	std::vector<Variable> args;
-	if (d.HasMember("arguments"))
+	if (d.HasMember("types"))
 	{
-		Value &arguments = d["arguments"];
-		if (arguments.IsArray())
+		Value &types = d["types"];
+		if (types.IsArray())
 		{
-			for (SizeType i = 0; i < arguments.Size(); i++)
+			for (SizeType i = 0; i < types.Size(); i++)
 			{
 				Variable v;
 				v.setId(i);
 
-				Value &arg = arguments[i];
-				if (arg.HasMember("name"))
+				Value &typ = types[i];
+				if (typ.HasMember("name"))
 				{
-					Value &name = arg["name"];
+					Value &name = typ["name"];
 					if (name.IsString())
 						v.setName(name.GetString());
 				}
 				std::string h;
-				if (arg.HasMember("hint"))
+				if (typ.HasMember("hint"))
 				{
-					Value &hint = arg["hint"];
+					Value &hint = typ["hint"];
 					if (hint.IsString())
 						v.setHint(hint.GetString());
 				}
@@ -76,7 +74,7 @@ int parse
 				{
 					Value &val = intenttemplate["name"];
 					if (val.IsString())
-						v.setLang(val.GetString());
+						v.setName(val.GetString());
 				}
 				if (intenttemplate.HasMember("description"))
 				{
@@ -88,7 +86,7 @@ int parse
 				{
 					Value &val = intenttemplate["template"];
 					if (val.IsString())
-						v.setLang(val.GetString());
+						v.setTemplateString(val.GetString());
 				}
 
 				if (intenttemplate.HasMember("variables"))
@@ -96,9 +94,10 @@ int parse
 					Value &variables = intenttemplate["variables"];
 					if (variables.IsArray())
 					{
-						for (SizeType i = 0; i < templates.Size(); i++)
+						std::vector<VariableColumn> vcs;
+						for (SizeType j = 0; j < variables.Size(); j++)
 						{
-							Value &variable = variables[i];
+							Value &variable = variables[j];
 							VariableColumn vc;
 							if (variable.HasMember("column"))
 							{
@@ -106,9 +105,9 @@ int parse
 								if (val.IsInt())
 									vc.setColumn(val.GetInt());
 							}
-							if (variable.HasMember("index"))
+							if (variable.HasMember("type-index"))
 							{
-								Value &val = variable["index"];
+								Value &val = variable["type-index"];
 								if (val.IsInt())
 									vc.setIdx(val.GetInt());
 							}
@@ -130,8 +129,8 @@ int parse
 								if (val.IsBool())
 									vc.setEncode(val.GetBool());
 							}
+							vcs.push_back(vc);
 						}
-						std::vector<VariableColumn> vcs;
 						v.setVariableColumnList(vcs);
 					}
 				}

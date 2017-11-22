@@ -28,6 +28,7 @@ private:
 	);
 	int errorcode;
 public:
+	int cmd;											///< 0- format, 1- show available intents with args
 	std::vector<std::string> templateFileNames;			///< JSON intent template file names
 	std::string templateName;							///< arguments
 	std::vector<std::string> arguments;					///< arguments

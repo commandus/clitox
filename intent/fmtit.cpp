@@ -14,9 +14,25 @@ int main(int argc, char** argv)
 
 	std::vector<IntentTemplate> its;
 	load_json_files(its, config.templateFileNames);
-	for (int i = 0; i < its.size(); i++)
-	{
-		std::cout << its[i].getId() << "\t" << its[i].getName() << std::endl;
+	
+	switch (config.cmd) {
+		case 1:
+		{
+			for (int i = 0; i < its.size(); i++)
+			{
+				std::cout << its[i].getName();
+				IntentTemplate it = its[i];
+				std::vector <VariableColumn> vcs = it.getVariableColumnList();
+				for (int a = 0; a < vcs.size(); a++)
+				{
+					std::cout << " " << vcs[a].getName();
+				}
+				std::cout << std::endl;
+			}
+		}
+		break;
+		default:
+			break;
 	}
 	return 0;
 }

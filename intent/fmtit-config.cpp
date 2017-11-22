@@ -33,14 +33,16 @@ int FmtitConfig::parseCmd
 {
 	// GTFS https://developers.google.com/transit/gtfs/reference/?csw=1
 	struct arg_str *a_file_names = arg_strn("f", "file", "<file>", 0, 100, "Intent template file name. Default " DEF_FILE_NAME);
-	struct arg_str *a_template_name = arg_str1(NULL, NULL, "<template name>", "Template name");
+	struct arg_lit *a_list_commands = arg_lit0("l", "list", "Show available intents");
+	
+	struct arg_str *a_template_name = arg_str0(NULL, NULL, "<template name>", "Template name");
 	struct arg_str *a_arguments = arg_strn(NULL, NULL, "<arg>", 0, 200, "Argument");
 
 	struct arg_lit *a_help = arg_lit0("h", "help", "Show this help");
 	struct arg_end *a_end = arg_end(20);
 
 	void* argtable[] = { 
-		a_file_names, a_template_name, a_arguments,
+		a_file_names, a_list_commands, a_template_name, a_arguments,
 		a_help, a_end 
 	};
 
@@ -55,6 +57,8 @@ int FmtitConfig::parseCmd
 	// Parse the command line as defined by argtable[]
 	nerrors = arg_parse(argc, argv, argtable);
 
+	cmd = (a_list_commands->count > 0) ? 1 : 0;
+	
 	for (int i = 0; i < a_file_names->count; i++)
 	{
 		templateFileNames.push_back(a_file_names->sval[i]);
@@ -68,7 +72,8 @@ int FmtitConfig::parseCmd
 	}
 	else
 	{
-		nerrors++;
+		if (a_list_commands->count == 0)
+			nerrors++;
 	}
 
 	for (int i = 0; i < a_arguments->count; i++)

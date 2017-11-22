@@ -1,5 +1,5 @@
 {
-	"arguments": [{
+	"types": [{
 			"name": "myphone",
 			"hint": "My phone number"
 		},
@@ -107,13 +107,13 @@
 	"templates": [{
 			"lang": "en",
 			"img": "",
-			"name": "Application",
-			"description": "Start selected application",
+			"name": "start",
+			"description": "Start application",
 			"template": "",
 			"variables": [{
 				"column": 0,
-				"index": 18,
-				"name": "Application",
+				"type-index": 18,
+				"name": "app",
 				"length": 0,
 				"encode": true
 			}]
@@ -121,13 +121,13 @@
 		{
 			"lang": "en",
 			"img": "",
-			"name": "Dial",
+			"name": "dial",
 			"description": "Dial a phone number",
 			"template": "tel:",
 			"variables": [{
 				"column": 4,
-				"index": 19,
-				"name": "Phone",
+				"type-index": 19,
+				"name": "phone-number",
 				"length": 0,
 				"encode": true
 			}]
@@ -135,13 +135,13 @@
 		{
 			"lang": "en",
 			"img": "",
-			"name": "Dial contact",
+			"name": "dial-contact",
 			"description": "Dial a phone number from your contacts",
 			"template": "tel",
 			"variables": [{
 				"column": 4,
-				"index": 16,
-				"name": "Phone number",
+				"type-index": 16,
+				"name": "phone-number",
 				"length": 0,
 				"encode": true
 			}]
@@ -149,13 +149,13 @@
 		{
 			"lang": "en",
 			"img": "",
-			"name": "SMS to contact",
+			"name": "post-sms-contact",
 			"description": "Send SMS to your contact",
 			"template": "sms:",
 			"variables": [{
 				"column": 4,
-				"index": 16,
-				"name": "Mobile phone",
+				"type-index": 16,
+				"name": "phone-number",
 				"length": 0,
 				"encode": true
 			}]
@@ -163,25 +163,25 @@
 		{
 			"lang": "en",
 			"img": "",
-			"name": "e-mail",
+			"name": "post-mail",
 			"description": "Send e-mail to contact",
 			"template": "#Intent;action=android.intent.action.SEND;type=text/plain;S.android.intent.extra.EMAIL=;S.android.intent.extra.SUBJECT=;S.android.intent.extra.TEXT=;S.com.commandus.intent.fix.array=android.intent.extra.EMAIL;end",
 			"variables": [{
 				"column": 87,
-				"index": 17,
-				"name": "e-mail",
+				"type-index": 17,
+				"name": "email",
 				"length": 0,
 				"encode": true
 			}, {
 				"column": 119,
-				"index": 25,
-				"name": "Subject",
+				"type-index": 25,
+				"name": "subject",
 				"length": 0,
 				"encode": true
 			}, {
 				"column": 148,
-				"index": 26,
-				"name": "Text",
+				"type-index": 26,
+				"name": "body",
 				"length": 0,
 				"encode": true
 			}]
@@ -189,37 +189,37 @@
 		{
 			"lang": "en",
 			"img": "",
-			"name": "HTTP",
-			"description": "Test",
+			"name": "link",
+			"description": "Open HTTP link",
 			"template": "http://",
 			"variables": [{
 				"column": 7,
-				"index": 21,
-				"name": "Address",
+				"type-index": 21,
+				"name": "address",
 				"length": 0,
 				"encode": true
 			}, {
 				"column": 7,
-				"index": 23,
-				"name": "Date",
+				"type-index": 23,
+				"name": "date",
 				"length": 0,
 				"encode": true
 			}, {
 				"column": 7,
-				"index": 24,
-				"name": "Time",
+				"type-index": 24,
+				"name": "time",
 				"length": 0,
 				"encode": true
 			}, {
 				"column": 7,
-				"index": 25,
-				"name": "One line",
+				"type-index": 25,
+				"name": "one-line",
 				"length": 0,
 				"encode": true
 			}, {
 				"column": 7,
-				"index": 22,
-				"name": "Number",
+				"type-index": 22,
+				"name": "number",
 				"length": 0,
 				"encode": true
 			}]
@@ -227,13 +227,13 @@
 		{
 			"lang": "en",
 			"img": "",
-			"name": "Show image",
+			"name": "view-image",
 			"description": "Show photo or picture",
 			"template": "#Intent;action=android.intent.action.VIEW;type=image/*;end",
 			"variables": [{
 				"column": 0,
-				"index": 13,
-				"name": "Photo",
+				"type-index": 13,
+				"name": "url",
 				"length": 0,
 				"encode": false
 			}]
@@ -241,13 +241,13 @@
 		{
 			"lang": "en",
 			"img": "",
-			"name": "Play sound",
+			"name": "play-audio",
 			"description": "Play audio record",
 			"template": "#Intent;action=android.intent.action.VIEW;type=audio/*;end",
 			"variables": [{
 				"column": 0,
-				"index": 14,
-				"name": "Audio",
+				"type-index": 14,
+				"name": "audio",
 				"length": 0,
 				"encode": false
 			}]
@@ -255,13 +255,13 @@
 		{
 			"lang": "en",
 			"img": "",
-			"name": "Play video",
+			"name": "play-video",
 			"description": "Play video",
 			"template": "#Intent;action=android.intent.action.VIEW;type=video/*;end",
 			"variables": [{
 				"column": 0,
-				"index": 14,
-				"name": "Video",
+				"type-index": 14,
+				"name": "video",
 				"length": 0,
 				"encode": false
 			}]
@@ -269,13 +269,13 @@
 		{
 			"lang": "en",
 			"img": "",
-			"name": "Twitter",
+			"name": "post-twitter",
 			"description": "Send post to Twitter",
 			"template": "#Intent;action=android.intent.action.SEND;type=text/plain;component=com.twitter.android/com.twitter.applib.PostActivity;S.android.intent.extra.TEXT=;end",
 			"variables": [{
 				"column": 148,
-				"index": 25,
-				"name": "Twit",
+				"type-index": 25,
+				"name": "twit",
 				"length": 0,
 				"encode": false
 			}]
@@ -283,13 +283,13 @@
 		{
 			"lang": "en",
 			"img": "",
-			"name": "Facebook status",
+			"name": "post-facebook",
 			"description": "Send post to Facebook",
 			"template": "#Intent;action=android.intent.action.SEND;type=text/plain;component=com.facebook.katana/.activity.composer.ImplicitShareIntentHandler;S.android.intent.extra.TEXT=;end",
 			"variables": [{
 				"column": 162,
-				"index": 25,
-				"name": "Status",
+				"type-index": 25,
+				"name": "status",
 				"length": 0,
 				"encode": false
 			}]
@@ -297,13 +297,13 @@
 		{
 			"lang": "en",
 			"img": "",
-			"name": "Viber message",
+			"name": "post-viber",
 			"description": "Send viber message",
 			"template": "#Intent;action=android.intent.action.SEND;type=text/plain;component=com.viber.voip/.WelcomeShareActivity;S.android.intent.extra.TEXT=;S.android.intent.extra.EXTRA_PHONE_NUMBER=;end",
 			"variables": [{
 				"column": 0,
-				"index": 25,
-				"name": "Message",
+				"type-index": 25,
+				"name": "message",
 				"length": 0,
 				"encode": false
 			}]
@@ -311,13 +311,13 @@
 		{
 			"lang": "en",
 			"img": "",
-			"name": "Viber call",
+			"name": "dial-viber",
 			"description": "Place a call using Viber",
 			"template": "tel:#Intent;action=com.viber.voip.action.CALL;l.contact_id=-1;B.external_call=false;end",
 			"variables": [{
 				"column": 4,
-				"index": 19,
-				"name": "Viber phone number",
+				"type-index": 19,
+				"name": "phone-number",
 				"length": 0,
 				"encode": true
 			}]
@@ -325,13 +325,13 @@
 		{
 			"lang": "en",
 			"img": "",
-			"name": "Viber call to contact",
+			"name": "call-viber",
 			"description": "Place a call using Viber",
 			"template": "tel:#Intent;action=com.viber.voip.action.CALL;l.contact_id=-1;B.external_call=false;end",
 			"variables": [{
 				"column": 4,
-				"index": 16,
-				"name": "Viber phone",
+				"type-index": 16,
+				"name": "phone-number",
 				"length": 0,
 				"encode": true
 			}]
@@ -339,13 +339,13 @@
 		{
 			"lang": "en",
 			"img": "",
-			"name": "Dial Internet phone",
+			"name": "dial-sip",
 			"description": "Dial a SIP phone",
 			"template": "sip:",
 			"variables": [{
 				"column": 4,
-				"index": 17,
-				"name": "SIP address",
+				"type-index": 17,
+				"name": "sip-address",
 				"length": 0,
 				"encode": true
 			}]
