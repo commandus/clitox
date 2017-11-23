@@ -52,7 +52,7 @@ public:
 
 	void setDescription(const std::string &description);
 
-	std::vector<VariableColumn> getVariableColumnList();
+	std::vector<VariableColumn> getVariableColumnList() const;
 
 	void setVariableColumnList(const std::vector<VariableColumn> &variableColumnList);
 

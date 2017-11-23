@@ -36,7 +36,9 @@ int main(int argc, char** argv)
 		default:
 			// format
 			{
-				IntentFormatter(its);
+				IntentFormatter fmt(&its);
+				std::string s = fmt.format(config.templateName, config.arguments);
+				std::cout << s << std::endl;
 			}
 			break;
 	}

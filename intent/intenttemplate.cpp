@@ -1,6 +1,6 @@
 /**
- * Intent template class
- */
+* Intent template class
+*/
 
 #include <sstream>
 #include "intenttemplate.h"
@@ -79,7 +79,8 @@ void IntentTemplate::setId(int value)
 	id = value;
 }
 
-std::vector<VariableColumn> IntentTemplate::getVariableColumnList() {
+std::vector<VariableColumn> IntentTemplate::getVariableColumnList() const 
+{
 	return variableColumnList;
 }
 
@@ -127,67 +128,65 @@ std::string IntentTemplate::toString()
 
 bool IntentTemplate::operator==(const IntentTemplate& that) const
 {
-    if (id != that.id) 
-        return false;
-    if (templateString != that.templateString)
-        return false;
-    if (name != that.name)
-        return false;
-    if (lang != that.lang)
-        return false;
-    if (description != that.description)
-        return false;
-    if (variableColumnList != that.variableColumnList)
-        return false;
-    return 
-        imageUri != that.imageUri;
-
+	if (id != that.id) 
+		return false;
+	if (templateString != that.templateString)
+		return false;
+	if (name != that.name)
+		return false;
+	if (lang != that.lang)
+		return false;
+	if (description != that.description)
+		return false;
+	if (variableColumnList != that.variableColumnList)
+		return false;
+	return 
+		imageUri != that.imageUri;
 }
 
 IntentTemplate::IntentTemplate(const std::string &value) 
 {
-    int i = 0;
-    std::size_t b = 0;
-    for (std::size_t it(value.find('|', b)); it != std::string::npos; ++it)
-    {
-        std::string s(b, it - b);
-        switch (i) {
-            case 0:
-                setLang(s);
-                break;
-            case 1:
-                setImageUri(s);
-                break;
-            case 2:
-                setName(s);
-                break;
-            case 3:
-                setDescription(s);
-                break;
-            case 4:
-                setTemplateString(s);
-                break;
-            case 5:
-                setVariableColumnList(parseVariableColumnList(s));
-                break;
-            default:
-                break;
-        }
-        b = it;
-        i++;
-    }
+	int i = 0;
+	std::size_t b = 0;
+	for (std::size_t it(value.find('|', b)); it != std::string::npos; ++it)
+	{
+		std::string s(b, it - b);
+		switch (i) {
+			case 0:
+				setLang(s);
+				break;
+			case 1:
+				setImageUri(s);
+				break;
+			case 2:
+				setName(s);
+				break;
+			case 3:
+				setDescription(s);
+				break;
+			case 4:
+				setTemplateString(s);
+				break;
+			case 5:
+				setVariableColumnList(parseVariableColumnList(s));
+				break;
+			default:
+				break;
+		}
+		b = it;
+		i++;
+	}
 }
 
 std::vector<VariableColumn> IntentTemplate::parseVariableColumnList(const std::string &value) 
 {
-    std::vector<VariableColumn> r;
-    int i = 0;
-    std::size_t b = 0;
-    for (std::size_t it(value.find(',')); it != std::string::npos; ++it)
-    {
-        std::string s(b, it - b);
-        VariableColumn vc(s);
-        r.push_back(vc);
-    }
-    return r;
+	std::vector<VariableColumn> r;
+	std::size_t b = 0;
+	for (std::size_t it(value.find(',')); it != std::string::npos; ++it)
+	{
+		std::string s(b, it - b);
+		VariableColumn vc(s);
+		r.push_back(vc);
+	}
+	return r;
 }
