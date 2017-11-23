@@ -29,6 +29,7 @@ nobase_dist_include_HEADERS = \
 	rapidjson/internal/diyfp.h       rapidjson/internal/ieee754.h rapidjson/internal/meta.h rapidjson/internal/regex.h rapidjson/internal/strfunc.h rapidjson/internal/swap.h \
 	rapidjson/msinttypes/inttypes.h  rapidjson/msinttypes/stdint.h \
 	intent/variablecolumn.h          intent/intenttemplate.h	intent/intenttemplatejson.h	intent/variable.h	intent/fmtit.h		intent/fmtit-config.h \
+	intent/intentformatter.h \
 	toxnodejson.h
 
 common_src = 
@@ -52,6 +53,7 @@ clitox_CPPFLAGS = $(commoncppflags)
 fmtit_SOURCES= \
 	intent/variablecolumn.cpp intent/intenttemplate.cpp intent/intenttemplatejson.cpp \
 	intent/variable.cpp intent/fmtit.cpp intent/fmtit-config.cpp \
+	intent/intentformatter.cpp \
 	$(common_src)
 
 fmtit_LDADD = $(commonlibs)
