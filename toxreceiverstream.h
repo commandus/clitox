@@ -41,6 +41,7 @@ public:
 	(
 		// Tox *tox,
 		ToxClient *toxclient,
+		TOX_MESSAGE_TYPE message_type,
 		uint32_t friend_number, 
 		const std::string &value,
 		void *user_data
@@ -58,6 +59,14 @@ public:
 		TOX_MESSAGE_TYPE *message_type,
 		std::string *m
 	);
+	virtual void putMessage
+	(
+		ToxClient *toxclient,
+		const TOX_MESSAGE_TYPE message_type,
+		const uint32_t friend_number,
+		const std::string &value
+	);
+
 	void execCommand
 	(
 		std::ostream &strmout,

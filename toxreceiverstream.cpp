@@ -51,6 +51,7 @@ void ToxReceiverStream::onConnectionStatus
 void ToxReceiverStream::onMessage
 (
 	ToxClient *toxclient,
+	TOX_MESSAGE_TYPE message_type,
 	uint32_t friend_number, 
 	const std::string &value,
 	void *user_data
@@ -88,6 +89,16 @@ bool ToxReceiverStream::nextMessageTo
 		*text = m.message;
 	}
 	return r;
+}
+
+void ToxReceiverStream::putMessage
+(
+	ToxClient *toxclient,
+	const TOX_MESSAGE_TYPE message_type,
+	const uint32_t friend_number,
+	const std::string &value
+)
+{
 }
 
 void ToxReceiverStream::execCommand

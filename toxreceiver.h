@@ -10,21 +10,19 @@ class ToxReceiver
 public:
 	virtual void onId
 	(
-		// Tox *tox,
 		ToxClient *toxclient,
 		const std::string &valuehex
 	) = 0;
 	virtual void onConnectionStatus
 	(
-		// Tox *tox,
 		ToxClient *toxclient,
 		TOX_CONNECTION value
 	) = 0;
 	virtual void onMessage
 	(
-		// Tox *tox,
 		ToxClient *toxclient,
-		uint32_t friend_number, 
+        TOX_MESSAGE_TYPE message_type,
+		uint32_t friend_number,
 		const std::string &value,
 		void *user_data
 	) = 0;
@@ -42,6 +40,15 @@ public:
 		uint32_t  *friend_number,
 		TOX_MESSAGE_TYPE *message_type,
 		std::string *m
+	) = 0;
+
+	// do not reflect to Java. Called from putMessage reflected in ToxClient
+	virtual void putMessage
+	(
+			ToxClient *toxclient,
+			const TOX_MESSAGE_TYPE message_type,
+			const uint32_t friend_number,
+			const std::string &value
 	) = 0;
 };
 

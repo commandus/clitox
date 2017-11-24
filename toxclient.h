@@ -48,6 +48,9 @@ private:
 	std::vector <uint32_t> friends;
 	bool friendNoRequest;
 	std::string inviteMessage;
+	std::string onlineStatus;
+	std::string awayStatus;
+	std::string busyStatus;
 	void addToList();
 	void rmFromList();
 public:
@@ -61,7 +64,10 @@ public:
 		const std::string &nick_name,
 		const std::string &status,
 		bool friend_norequest,
-		const std::string &invite_message
+		const std::string &invite_status,
+		const std::string &online_status,
+		const std::string &away_status,
+		const std::string &busy_status
 	);
 
     ~ToxClient();
@@ -171,6 +177,12 @@ public:
 	int run();
 	
 	void stop();
+
+	void putMessage(
+			int friendNumber,
+			int messageType,
+			const std::string &message
+	);
 };
 
 #endif // TOXCLIENT_H

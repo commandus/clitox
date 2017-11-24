@@ -285,7 +285,8 @@ void self_connection_status_cb
 
 ToxClient::ToxClient()
 	: stopped(false), connectionStatus(TOX_CONNECTION_NONE), fileName(""), toxReceiver(NULL), ownReceiver(false),
-	tox(NULL), friendNoRequest(false), inviteMessage("Add me to friend")
+	tox(NULL), friendNoRequest(false),
+	inviteMessage("Add me to friend"), onlineStatus("Online"), awayStatus("Away"), busyStatus("Busy")
 {
 }
 
@@ -297,10 +298,14 @@ ToxClient::ToxClient
 	const std::string &nick,
 	const std::string &status,
 	bool friend_norequest,
-	const std::string &invite_message
+	const std::string &invite_message,
+	const std::string &online_status,
+	const std::string &away_status,
+	const std::string &busy_status
 )
 	: stopped(false), connectionStatus(TOX_CONNECTION_NONE), fileName(filename), toxReceiver(NULL), ownReceiver(false), 
-		friendNoRequest(friend_norequest), inviteMessage(invite_message)
+		friendNoRequest(friend_norequest),
+	  	inviteMessage(invite_message), onlineStatus(online_status), awayStatus(away_status), busyStatus(busy_status)
 {
 	// Tox_Options *options = tox_options_new(NULL);
 	if (readTox(&tox, toxoptions, filename) != TOX_ERR_NEW_OK)
@@ -450,7 +455,7 @@ void ToxClient::friendMessage
 )
 {
 	if (toxReceiver)
-		toxReceiver->onMessage(this, friend_number, std::string((char *) message, length), user_data);
+		toxReceiver->onMessage(this, type, friend_number, std::string((char *) message, length), user_data);
 }
 
 void ToxClient::friendRequest
@@ -588,4 +593,22 @@ uint32_t ToxClient::addFriend
 int ToxClient::getFriendSize()
 {
 	return tox_self_get_friend_list_size(tox);
+}
+
+/**
+ *
+ * @param friendNumber <0- send to all
+ * @param messageType 0- text, 1- action
+ * @param message message as String
+ */
+void ToxClient::putMessage
+		(
+				int friendNumber,
+				int messageType,
+				const std::string &message
+		)
+{
+	if (!toxReceiver)
+		return;
+	toxReceiver->putMessage(this, (const TOX_MESSAGE_TYPE) messageType, friendNumber, message);
 }

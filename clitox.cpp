@@ -81,7 +81,8 @@ int main(int argc, char** argv)
 		getDefaultNodes(nodes);
 
 	toxclient = new ToxClient(&toxoptions, nodes, config.file_name, config.nick_name, config.status_message, 
-		config.friend_norequest, config.message_friend_request);
+		config.friend_norequest, 
+		config.message_friend_request, config.message_online, config.message_away, config.message_busy);
 
 	std::string r = toxclient->getIdHex();
 
