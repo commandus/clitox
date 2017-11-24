@@ -139,6 +139,26 @@ public:
 		uint32_t friend_number
 	);
 
+	std::string getFriendStatusString
+	(
+		uint32_t friend_number
+	);
+
+	TOX_USER_STATUS getFriendStatus
+	(
+		uint32_t friend_number
+	);
+
+	TOX_CONNECTION getFriendConnection
+	(
+		uint32_t friend_number
+	);
+
+	bool getFriendIsConnected
+	(
+		uint32_t friend_number
+	);
+
 	void clearFriends();
 	
 	uint32_t addFriend

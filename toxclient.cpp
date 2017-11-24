@@ -519,6 +519,43 @@ std::string ToxClient::getFriendName
 	return std::string((char *) name, size);
 }
 
+std::string ToxClient::getFriendStatusString
+(
+	uint32_t friend_number
+)
+{
+	size_t sz = tox_friend_get_status_message_size(tox, friend_number, NULL);
+	if (!sz)
+		return "";
+	std::string s(sz, ' ');
+	tox_friend_get_status_message(tox, friend_number, (uint8_t *) s.c_str(), NULL);
+	return s;
+}
+
+TOX_USER_STATUS ToxClient::getFriendStatus
+(
+	uint32_t friend_number
+)
+{
+	return tox_friend_get_status(tox, friend_number, NULL);
+}
+
+TOX_CONNECTION ToxClient::getFriendConnection
+(
+	uint32_t friend_number
+)
+{
+	return tox_friend_get_connection_status(tox, friend_number, NULL);
+}
+
+bool ToxClient::getFriendIsConnected
+(
+	uint32_t friend_number
+)
+{
+	return tox_friend_get_connection_status(tox, friend_number, NULL) != TOX_CONNECTION_NONE;
+}
+
 void ToxClient::clearFriends
 (
 )

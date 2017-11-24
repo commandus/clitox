@@ -58,6 +58,16 @@ public:
 		TOX_MESSAGE_TYPE *message_type,
 		std::string *m
 	);
+	void execCommand
+	(
+		std::ostream &strmout,
+		ToxClient *toxclient,  
+		const std::string &line
+	);
+	bool isCommand
+	(
+		const std::string &line
+	);
 	void readLine
 	(
 		ToxClient *toxclient

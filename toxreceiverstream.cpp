@@ -90,6 +90,62 @@ bool ToxReceiverStream::nextMessageTo
 	return r;
 }
 
+void ToxReceiverStream::execCommand
+(
+	std::ostream &strm,
+	ToxClient *toxclient,
+	const std::string &line
+)
+{
+	if (!toxclient)
+		return;
+	if (line == "/status")
+	{
+		strm << "Name\tStatus";
+		strm << std::endl;
+		int sz = toxclient->getFriendSize();
+		for (int i = 0; i < sz; i++)
+		{
+			std::string n = toxclient->getFriendName(i);
+			if (n.empty())
+				strm << i + 1;
+			else
+				strm << n;
+			strm << "\t";
+			TOX_USER_STATUS status = toxclient->getFriendStatus(i);
+			std::string sstatus;
+			switch(status)
+			{
+				case TOX_USER_STATUS_NONE:
+					sstatus = "online";
+					break;
+				case TOX_USER_STATUS_BUSY:
+					sstatus = "busy";
+					break;
+				case TOX_USER_STATUS_AWAY:
+					sstatus = "away";
+					break;
+			}
+			strm << (toxclient->getFriendIsConnected(i)? "connected" : "disconnected") << "\t"
+				<< sstatus << "\t"
+				<< toxclient->getFriendStatusString(i) << "\t";
+			strm << std::endl;
+		}
+		strm << std::endl;
+	}
+}
+
+bool ToxReceiverStream::isCommand
+(
+	const std::string &line
+)
+{
+	bool r = false;
+	if (line == "/status")
+		r = true;
+	return r;
+}
+
 void ToxReceiverStream::readLine
 (
 	ToxClient *toxclient
@@ -97,11 +153,18 @@ void ToxReceiverStream::readLine
 {
 	std::string line;
 	std::getline(istream, line);
-	ToxMessage m;
-	m.friend_number = 0;
-	m.message_type = defaultMessageType;
-	m.message = line;
-	messages.push(m);
+	if (isCommand(line))
+	{
+		execCommand(std::cout, toxclient, line);
+	}
+	else
+	{
+		ToxMessage m;
+		m.friend_number = 0;
+		m.message_type = defaultMessageType;
+		m.message = line;
+		messages.push(m);
+	}
 }
 
 	
