@@ -25,7 +25,7 @@ public:
 		std::ostream &e_stream,
 		TOX_MESSAGE_TYPE default_message_type
 	);
-    virtual ~ToxReceiverStream();
+    	~ToxReceiverStream();
 
 	virtual void onId(
 		// Tox *tox,

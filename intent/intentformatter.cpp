@@ -32,6 +32,7 @@ IntentFormatter::~IntentFormatter()
 IntentFormatter& IntentFormatter::operator=(const IntentFormatter& other)
 {
 	intentTemplates = other.intentTemplates;
+	return *this;
 }
 
 bool IntentFormatter::operator==(const IntentFormatter& other) const

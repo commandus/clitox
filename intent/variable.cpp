@@ -41,14 +41,13 @@ Variable::~Variable()
 
 Variable& Variable::operator=(const Variable& other)
 {
-	Variable r;
-	r.id = other.id;
-	r.name = other.name;
-	r.hint = other.hint;
-	r.value = other.name;
-	r.lang = other.lang;
-	r.formula = other.formula;
-	return r;
+	id = other.id;
+	name = other.name;
+	hint = other.hint;
+	value = other.name;
+	lang = other.lang;
+	formula = other.formula;
+	return *this;
 }
 
 bool Variable::operator==(const Variable& other) const

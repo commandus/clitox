@@ -8,6 +8,10 @@ class ToxClient;
 class ToxReceiver
 {
 public:
+	virtual ~ToxReceiver
+	(
+		
+	) {};
 	virtual void onId
 	(
 		ToxClient *toxclient,
