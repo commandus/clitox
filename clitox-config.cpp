@@ -57,12 +57,12 @@ int ClitoxConfig::parseCmd
     struct arg_lit *a_udp_disabled = arg_lit0(NULL, "no-udp", "Disable UDP");
     struct arg_lit *a_local_discovery_disabled = arg_lit0(NULL, "no-local", "Disable local discovery.");
 	struct arg_str *a_proxy_type = arg_str0(NULL, "proxy", "none|http|socks5", "Set proxy type. Default none.");
-	struct arg_str *a_proxy_host = arg_str0(NULL, "proxy_host", "IP address or name", "Proxy host address or name.");
-	struct arg_int *a_proxy_port = arg_int0(NULL, "proxy_port", "Port number", "Proxy host port.");
-	struct arg_int *a_start_port = arg_int0(NULL, "start_port", "Port number", "Default 33445.");
-	struct arg_int *a_end_port = arg_int0(NULL, "end_port", "Port number", "Default 33545.");
-	struct arg_int *a_tcp_port = arg_int0(NULL, "tcp_relay_port", "Port number", "TCP relay server port. Default 0 (disable).");
-	struct arg_lit *hole_punching_disabled = arg_lit0(NULL, "hole_punching_off", "Disable UDP hole-punching in toxcore.");
+	struct arg_str *a_proxy_host = arg_str0(NULL, "proxy-host", "IP address or name", "Proxy host address or name.");
+	struct arg_int *a_proxy_port = arg_int0(NULL, "proxy-port", "Port number", "Proxy host port.");
+	struct arg_int *a_start_port = arg_int0(NULL, "start-port", "Port number", "Default 33445.");
+	struct arg_int *a_end_port = arg_int0(NULL, "end-port", "Port number", "Default 33545.");
+	struct arg_int *a_tcp_port = arg_int0(NULL, "tcp-relay-port", "Port number", "TCP relay server port. Default 0 (disable).");
+	struct arg_lit *hole_punching_disabled = arg_lit0(NULL, "hole-punching-off", "Disable UDP hole-punching in toxcore.");
 
 	struct arg_lit *a_help = arg_lit0("h", "help", "Show this help");
 	struct arg_end *a_end = arg_end(20);
